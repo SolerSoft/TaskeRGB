@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tasker Plugin Sample</string>
+    <string name="app_name">TaskeRGB</string>
     <string name="formatted_time">Formatted Time</string>
     <string name="formatted_time_description">The time this action was created formatted with your chosen format</string>
     <string name="format">Format</string>
@@ -26,6 +26,35 @@
     <string name="get_seconds">Get Seconds</string>
     <string name="playing_label">Playing State</string>
     <string name="playing_html_label">Whether the player is playing right now or not</string>
+
+
+
+    <string name="rgbw">RGBW</string>
+    <string name="deviceInfo">Device Info</string>
+
+    <string name="addressLabel">Address</string>
+    <string name="addressDescription">The address of the device.</string>
+
+    <string name="nameLabel">Name</string>
+    <string name="nameDescription">A name for the device.</string>
+
+
+    <string name="redLabel">Red</string>
+    <string name="redDescription">The red component of the color value.</string>
+
+    <string name="greenLabel">green</string>
+    <string name="greenDescription">The green component of the color value.</string>
+
+    <string name="blueLabel">blue</string>
+    <string name="blueDescription">The blue component of the color value.</string>
+
+    <string name="whiteLabel">white</string>
+    <string name="whiteDescription">The white component of the color value.</string>
+
+    <string name="rgbwLabel">RGBW</string>
+    <string name="rgbwDescription">Red Green Blue and White packed into a 32-bit integer.</string>
+
+
 
     <string name="artist">artist</string>
     <string name="artist_label">Artist</string>

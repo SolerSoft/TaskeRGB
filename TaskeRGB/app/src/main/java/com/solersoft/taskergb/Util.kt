@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 
 fun String.toToast(context: Context) {
@@ -36,3 +38,23 @@ fun Activity.alert(title: String, message: String) {
 }
 
 val RadioGroup.checkedRadioButton get() = this.findViewById<RadioButton>(checkedRadioButtonId)
+
+/**
+ * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] doesn't
+ * fall within the expected range.
+ *
+ * @sample samples.misc.Preconditions.failRequireWithLazyMessage
+ */
+public inline fun requireRange(value: Double, max: Double, min: Double=0.0, lazyMessage: () -> Any): Unit {
+    require((value >= min) && (value <= max), lazyMessage)
+}
+
+/**
+ * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] doesn't
+ * fall within the expected range.
+ *
+ * @sample samples.misc.Preconditions.failRequireWithLazyMessage
+ */
+public inline fun requireRange(value: Int, max: Int, min: Int=0, lazyMessage: () -> Any): Unit {
+    require((value >= min) && (value <= max), lazyMessage)
+}
