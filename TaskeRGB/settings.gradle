@@ -1,1 +1,2 @@
-include ':app', ':taskerpluginlibrary'
+include ':taskerpluginlibrary'// Our main app
+include ':app'

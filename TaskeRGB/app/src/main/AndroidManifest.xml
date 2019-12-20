@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.joaomgcd.taskerpluginsample">
+    package="com.solersoft.taskergb">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.joaomgcd.taskerpluginsample.tasker.gettime.ActivityConfigGetTime"
+            android:name="com.solersoft.taskergb.tasker.gettime.ActivityConfigGetTime"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Time">
@@ -71,7 +71,7 @@
         </activity>
 
         <activity
-            android:name="com.joaomgcd.taskerpluginsample.tasker.gottime.ActivityConfigGotTime"
+            android:name="com.solersoft.taskergb.tasker.gottime.ActivityConfigGotTime"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Got Time">
@@ -90,7 +90,7 @@
 
 
         <activity
-            android:name="com.joaomgcd.taskerpluginsample.tasker.togglingcondition.ActivityConfigTogglingCondition"
+            android:name="com.solersoft.taskergb.tasker.togglingcondition.ActivityConfigTogglingCondition"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Toggling">
