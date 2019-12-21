@@ -27,7 +27,7 @@
     <string name="playing_label">Playing State</string>
     <string name="playing_html_label">Whether the player is playing right now or not</string>
 
-
+    <!-- RGBW Configuration Labels -->
 
     <string name="deviceInfoLabel">Device</string>
     <string name="deviceInfoDescription">The device to control.</string>
@@ -42,13 +42,13 @@
     <string name="redLabel">Red</string>
     <string name="redDescription">The red component of the color value.</string>
 
-    <string name="greenLabel">green</string>
+    <string name="greenLabel">Green</string>
     <string name="greenDescription">The green component of the color value.</string>
 
-    <string name="blueLabel">blue</string>
+    <string name="blueLabel">Blue</string>
     <string name="blueDescription">The blue component of the color value.</string>
 
-    <string name="whiteLabel">white</string>
+    <string name="whiteLabel">White</string>
     <string name="whiteDescription">The white component of the color value.</string>
 
     <string name="rgbwDeviceLabel">Device</string>
@@ -57,6 +57,9 @@
     <string name="rgbwValueLabel">Value</string>
     <string name="rgbwValueDescription">The RGBW value.</string>
 
+    <!-- RGBW Error Messages -->
+    <string name="rgbwErrConfig">Configuration error.</string>
+    <string name="rgbwErrDeviceUnavailable">RGBW device was unavailable.</string>
 
     <string name="artist">artist</string>
     <string name="artist_label">Artist</string>

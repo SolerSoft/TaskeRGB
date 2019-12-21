@@ -47,12 +47,15 @@ class RGBWInput @JvmOverloads constructor(
 
     // Validates that the DeviceInfo contains valid data.
     public fun isValid() : SimpleResult {
-        // Check device first
+
+        // We actually allow a misconfigured device because otherwise the
+        // user will never be able to leave the configuration screen.
+        /*
         var r = device.isValid()
-        if (!r.success) { return r; }
+        if (!r.success) { return r; } */
 
         // Check value
-        r = value.isValid()
+        var r = value.isValid()
         if (!r.success) { return r; }
 
         // All good
