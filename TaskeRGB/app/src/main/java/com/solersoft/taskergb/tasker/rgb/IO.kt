@@ -9,19 +9,27 @@ import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputObject
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.requireRange
+import com.solersoft.taskergb.tasker.getartists.MusicAlbum
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 /****************************************
  * Inputs
  ****************************************/
 
 // Device Info
-@TaskerInputObject("device", R.string.deviceInfo)
-class RGBDeviceInfo @JvmOverloads constructor(
-        @field:TaskerInputField(R.string.addressKey, R.string.address) var address: String? = null,
-        @field:TaskerInputField("name", R.string.name) var name: String? = null
+@TaskerInputObject(RGBWDeviceInfo.KEY, R.string.rgbwDeviceLabel, R.string.rgbwDeviceDescription)
+class RGBWDeviceInfo @JvmOverloads constructor(
+        @field:TaskerInputField(VAR_ADDRESS, R.string.deviceAddressLabel, R.string.deviceAddressDescription) var address: String? = null,
+        @field:TaskerInputField(VAR_NAME, R.string.deviceNameLabel, R.string.deviceNameDescription) var name: String? = null
 ) {
+    companion object {
+        const val KEY = "rgbwDeviceInfo"
+        const val VAR_ADDRESS = "address"
+        const val VAR_NAME = "name"
+    }
+
     // Validates that the DeviceInfo contains valid data.
     public fun isValid() : SimpleResult {
         return SimpleResult.get {
@@ -32,10 +40,11 @@ class RGBDeviceInfo @JvmOverloads constructor(
 
 // Main Input
 @TaskerInputRoot
-class RGBInput @JvmOverloads constructor(
-        @field:TaskerInputObject("device") var device: RGBDeviceInfo = RGBDeviceInfo(),
-        @field:TaskerInputObject("value") var value: RGBWValue = RGBWValue()
+class RGBWInput @JvmOverloads constructor(
+        @field:TaskerInputObject(RGBWDeviceInfo.KEY, R.string.rgbwDeviceLabel, R.string.rgbwDeviceDescription) var device: RGBWDeviceInfo = RGBWDeviceInfo(),
+        @field:TaskerInputObject(RGBWValue.KEY, R.string.rgbwValueLabel, R.string.rgbwValueDescription) var value: RGBWValue = RGBWValue()
 ) {
+
     // Validates that the DeviceInfo contains valid data.
     public fun isValid() : SimpleResult {
         // Check device first
@@ -57,54 +66,41 @@ class RGBInput @JvmOverloads constructor(
  ****************************************/
 
 @TaskerOutputObject()
-class RGBOutput(
-        @get:TaskerOutputVariable("value", R.string.rgbwValue, R.string.time_description) var time: Long = Date().time,
-        //nested output. Notice how DateParts also has the @TaskerOutputObject annotation
-        var dateParts: DateParts = DateParts(time)
+class RGBWOutput(val value: RGBWValue)
 
-){
-    companion object {
-        const val VAR_SECONDS = "seconds"
-        const val VAR_FORMATTED_TIME = "formatted_time"
-    }
-}
-
-@TaskerOutputObject()
-class DateParts(time: Long) {
-    private val date = Date(time)
-
-    @get:TaskerOutputVariable("hours", R.string.hours, R.string.hours_description)
-    val hours: String = SimpleDateFormat("HH").format(date)
-    @get:TaskerOutputVariable("minutes", R.string.minutes, R.string.minutes_description)
-    val minutes: String = SimpleDateFormat("mm").format(date)
-    @get:TaskerOutputVariable(RGBOutput.VAR_SECONDS, R.string.seconds, R.string.seconds_description)
-    val seconds: String = SimpleDateFormat("ss").format(date)
-}
 
 
 /****************************************
  * Input / Outputs
  ****************************************/
 
-@TaskerInputObject("rgbwValue", R.string.rgbwValue)
+@TaskerInputObject(RGBWValue.KEY, R.string.rgbwValueLabel, R.string.rgbwValueDescription)
 @TaskerOutputObject()
 class RGBWValue @JvmOverloads constructor(
-        @field:TaskerInputField(VAR_RED, R.string.red_label)
-        @get:TaskerOutputVariable(VAR_RED, R.string.red_label, R.string.red_html_label)
+        @field:TaskerInputField(VAR_RED, R.string.redLabel, R.string.redDescription)
+        @get:TaskerOutputVariable(VAR_RED, R.string.redLabel, R.string.redDescription)
         var red: Int = 255,
 
-        @field:TaskerInputField(VAR_GREEN, R.string.green_label)
-        @get:TaskerOutputVariable(VAR_GREEN, R.string.green_label, R.string.green_html_label)
+        @field:TaskerInputField(VAR_GREEN, R.string.greenLabel, R.string.greenDescription)
+        @get:TaskerOutputVariable(VAR_GREEN, R.string.greenLabel, R.string.greenDescription)
         var green: Int = 255,
 
-        @field:TaskerInputField(VAR_BLUE, R.string.blue_label)
-        @get:TaskerOutputVariable(VAR_BLUE, R.string.blue_label, R.string.blue_html_label)
+        @field:TaskerInputField(VAR_BLUE, R.string.blueLabel, R.string.blueDescription)
+        @get:TaskerOutputVariable(VAR_BLUE, R.string.blueLabel, R.string.blueDescription)
         var blue: Int = 255,
 
-        @field:TaskerInputField(VAR_WHITE, R.string.white_label)
-        @get:TaskerOutputVariable(VAR_WHITE, R.string.white_label, R.string.white_html_label)
+        @field:TaskerInputField(VAR_WHITE, R.string.whiteLabel, R.string.whiteDescription)
+        @get:TaskerOutputVariable(VAR_WHITE, R.string.whiteLabel, R.string.whiteDescription)
         var white: Int = 255
 ) {
+    companion object {
+        const val KEY = "rgbwValue"
+        const val VAR_RED = "red"
+        const val VAR_GREEN = "green"
+        const val VAR_BLUE = "blue"
+        const val VAR_WHITE = "white"
+    }
+
     // Validates that the RGBWValue contains valid data.
     public fun isValid() : SimpleResult {
         return SimpleResult.get {
@@ -113,12 +109,5 @@ class RGBWValue @JvmOverloads constructor(
             requireRange(blue, 255) {"Blue must be between 0 and 255"}
             requireRange(white, 255) {"White must be between 0 and 255"}
         }
-    }
-
-    companion object {
-        const val VAR_RED = "red"
-        const val VAR_GREEN = "green"
-        const val VAR_BLUE = "blue"
-        const val VAR_WHITE = "white"
     }
 }

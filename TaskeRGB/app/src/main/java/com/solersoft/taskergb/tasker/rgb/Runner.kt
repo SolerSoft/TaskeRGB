@@ -15,34 +15,16 @@ import com.solersoft.taskergb.tasker.gottime.ActivityConfigGotTime
 import com.solersoft.taskergb.tasker.gottime.GotTimeUpdate
 import java.util.*
 
-class RGBRunner : TaskerPluginRunnerAction<RGBInput, RGBOutput>() {
+// Represents a Tasker action
+class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
+
+    // Add our custom plugin icon
     override val notificationProperties get() = NotificationProperties(iconResId = R.drawable.plugin)
 
-    //User has the option to name the output variable for the time, so you add that rename here
-    override fun addOutputVariableRenames(context: Context, input: TaskerInput<RGBInput>, renames: TaskerOutputRenames) {
-        super.addOutputVariableRenames(context, input, renames)
-        renames.add(TaskerOutputRename(RGBOutput.VAR_FORMATTED_TIME, input.regular.variableName))
-    }
+    // Performs the real work of the action
+    override fun run(context: Context, input: TaskerInput<RGBWInput>): TaskerPluginResult<RGBWOutput> {
 
-    override fun shouldAddOutput(context: Context, input: TaskerInput<RGBInput>?, ouput: TaskerOuputBase): Boolean {
-        if (input == null) return true
-        if (input.regular.getSeconds) return true;
-        return ouput.nameNoSuffix != RGBOutput.VAR_SECONDS
+        // TODO: Actually do some work!
+        return TaskerPluginResultSucess(RGBWOutput(input.regular.value))
     }
-
-    override fun run(context: Context, input: TaskerInput<RGBInput>): TaskerPluginResult<RGBOutput> {
-        //Notice how you get the dynamic input by key here
-        val dateMs = input.dynamic.getByKey(KEY_RGBW)?.valueAs<Long?>()
-                ?: throw RuntimeException("Time was not configured!!")
-        val formatted = input.regular.format(dateMs)
-        var result = formatted
-        input.regular.times?.let { times ->
-            for (count in 1 until times) {
-                result += " $formatted"
-            }
-        }
-        ActivityConfigGotTime::class.java.requestQuery(context, GotTimeUpdate(Date().time))
-        return TaskerPluginResultSucess(RGBOutput(result, "Not for below Oreo 8.1!!"))
-    }
-
 }

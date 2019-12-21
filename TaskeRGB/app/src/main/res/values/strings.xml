@@ -29,14 +29,14 @@
 
 
 
-    <string name="rgbw">RGBW</string>
-    <string name="deviceInfo">Device Info</string>
+    <string name="deviceInfoLabel">Device</string>
+    <string name="deviceInfoDescription">The device to control.</string>
 
-    <string name="addressLabel">Address</string>
-    <string name="addressDescription">The address of the device.</string>
+    <string name="deviceAddressLabel">Address</string>
+    <string name="deviceAddressDescription">The address of the device.</string>
 
-    <string name="nameLabel">Name</string>
-    <string name="nameDescription">A name for the device.</string>
+    <string name="deviceNameLabel">Name</string>
+    <string name="deviceNameDescription">A name for the device.</string>
 
 
     <string name="redLabel">Red</string>
@@ -51,9 +51,11 @@
     <string name="whiteLabel">white</string>
     <string name="whiteDescription">The white component of the color value.</string>
 
-    <string name="rgbwLabel">RGBW</string>
-    <string name="rgbwDescription">Red Green Blue and White packed into a 32-bit integer.</string>
+    <string name="rgbwDeviceLabel">Device</string>
+    <string name="rgbwDeviceDescription">The RGBW device.</string>
 
+    <string name="rgbwValueLabel">Value</string>
+    <string name="rgbwValueDescription">The RGBW value.</string>
 
 
     <string name="artist">artist</string>
