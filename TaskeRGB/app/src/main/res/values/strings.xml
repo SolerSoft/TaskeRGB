@@ -61,6 +61,17 @@
     <string name="rgbwErrConfig">Configuration error.</string>
     <string name="rgbwErrDeviceUnavailable">RGBW device was unavailable.</string>
 
+
+    <!-- BLE Error Messages -->
+    <string name="location_permission_disabled">Location permission has been disabled.</string>
+    <string name="location_permission_not_granted">Location permission wasn\'t granted.</string>
+
+    <!-- Common Words -->
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+
+
+
     <string name="artist">artist</string>
     <string name="artist_label">Artist</string>
     <string name="artist_html_label">Artist for the current song</string>
