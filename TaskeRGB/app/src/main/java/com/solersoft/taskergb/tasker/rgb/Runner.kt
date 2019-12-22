@@ -27,7 +27,7 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
     // Add our custom plugin icon
     override val notificationProperties get() = NotificationProperties(iconResId = R.drawable.plugin)
 
-    private val defaultDeviceMacAddress = "F2:D6:43:93:70:7A"
+    private val defaultDeviceMacAddress = "7C:01:0A:E8:9B:D7"
 
     suspend fun logNameAndAppearance(context: Context, deviceMacAddress: String = defaultDeviceMacAddress) {
         deviceFor(context, deviceMacAddress).useBasic { device, services ->
@@ -59,6 +59,8 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
         runBlocking {
             logNameAndAppearance(context)
         }
+
+        Log.d(TAG, "Plugin Done!!")
 
         // TODO: Actually do some work!
         return TaskerPluginResultSucess(RGBWOutput(input.regular.value))

@@ -27,10 +27,10 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
-    /*
+
     packagingOptions {
         pickFirst("META-INF/kotlinx-coroutines-core.kotlin_module")
-    }*/
+    }
 
     androidExtensions {
         experimental = true
