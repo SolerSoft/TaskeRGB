@@ -10,19 +10,19 @@ import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResultSucess
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.ble.deviceFor
 import com.solersoft.taskergb.ble.useBasic
+import com.solersoft.taskergb.devices.RGBWDeviceBLE
 import kotlinx.coroutines.runBlocking
+import java.lang.Exception
+import java.util.*
 
 
 // Represents a Tasker action
 class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
 
-    companion object {
-        val TAG = this::class.simpleName
-        const val ERR_CONFIG = -1
-        const val ERR_DEVICE_UNAVAILABLE = -2
-        const val GATT_SERVICE = "0000FFE5-0000-1000-8000-00805F9B34FB"
-        const val GATT_CHARACTERISTIC = "0000FFE9-0000-1000-8000-00805F9B34FB"
-    }
+    private val TAG = this::class.simpleName
+    private val ERR_CONFIG = -1
+    private val ERR_DEVICE_UNAVAILABLE = -2
+
 
     // Add our custom plugin icon
     override val notificationProperties get() = NotificationProperties(iconResId = R.drawable.plugin)
@@ -45,19 +45,39 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
     override fun run(context: Context, input: TaskerInput<RGBWInput>): TaskerPluginResult<RGBWOutput> {
 
         // Create shortcuts to inputs
-        var device = input.regular.device
+        var deviceInfo = input.regular.device
         var value = input.regular.value
 
+        // Temporarily override values
+        deviceInfo = RGBWDeviceInfo(defaultDeviceMacAddress, "My Bulb")
+        // value = RGBWValue(0, 0, 255, 255)
+
         // Make sure we have valid inputs
-        /*
-        require(device.isValid().success && value.isValid().success) {
+        require(deviceInfo.isValid().success && value.isValid().success) {
             context.getString(R.string.rgbwErrConfig)
-        }*/
+        }
 
         // This would normally be a coroutine, but Tasker doesn't support that
-        // so we have to run blocking
+        // so we have to run it blocking
         runBlocking {
-            logNameAndAppearance(context)
+            // Placeholder
+            var device: RGBWDeviceBLE? = null
+
+            // Following may fail
+            try {
+                // Create the device
+                device = RGBWDeviceBLE(context, deviceInfo.address!!)
+
+                // Connect to the device
+                device.connect()
+
+                // Write the value to the device
+                device.writeValue(value)
+            }
+            finally {
+                // Always make sure the device is closed
+                device?.close()
+            }
         }
 
         Log.d(TAG, "Plugin Done!!")
