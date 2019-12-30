@@ -1,32 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.solersoft.taskergb">
-
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- Features -->
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
 
-    <!-- Features -->
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
-
-    <!-- App -->
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
-
-        <!-- Activities -->
-        <activity android:name=".ActivityMain">
+        <activity
+            android:name=".DeviceControlActivity"
+            android:label="@string/title_activity_device_control"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Activities -->
+        <activity android:name=".ActivityMain">
 
+        </activity>
         <activity
             android:name=".tasker.helloworld.HelloWorldActivity"
             android:exported="true"
@@ -45,8 +48,8 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".tasker.togglecondition.ToggleConditionActivity"
+        <activity
+            android:name=".tasker.togglecondition.ToggleConditionActivity"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Toggle Condition">
@@ -54,8 +57,8 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".tasker.rgb.ActivityConfigRGBW"
+        <activity
+            android:name=".tasker.rgb.ActivityConfigRGBW"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="RGB Control">
@@ -63,9 +66,8 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.solersoft.taskergb.tasker.gettime.ActivityConfigGetTime"
+            android:name=".tasker.gettime.ActivityConfigGetTime"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Time">
@@ -82,7 +84,8 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
         </activity>
-        <activity android:name=".tasker.getartists.GetArtistsActivity"
+        <activity
+            android:name=".tasker.getartists.GetArtistsActivity"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Artists Info">
@@ -90,9 +93,8 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.solersoft.taskergb.tasker.gottime.ActivityConfigGotTime"
+            android:name=".tasker.gottime.ActivityConfigGotTime"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Got Time">
@@ -100,7 +102,8 @@
                 <action android:name="net.dinglisch.android.tasker.ACTION_EDIT_EVENT" />
             </intent-filter>
         </activity>
-        <activity android:name=".tasker.playstatechanged.PlayStateChangedActivity"
+        <activity
+            android:name=".tasker.playstatechanged.PlayStateChangedActivity"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Play State Changed">
@@ -108,10 +111,8 @@
                 <action android:name="net.dinglisch.android.tasker.ACTION_EDIT_EVENT" />
             </intent-filter>
         </activity>
-
-
         <activity
-            android:name="com.solersoft.taskergb.tasker.togglingcondition.ActivityConfigTogglingCondition"
+            android:name=".tasker.togglingcondition.ActivityConfigTogglingCondition"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Toggling">
@@ -120,4 +121,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
