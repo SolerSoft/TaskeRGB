@@ -51,11 +51,14 @@
     <string name="whiteLabel">White</string>
     <string name="whiteDescription">The white component of the color value.</string>
 
-    <string name="rgbwDeviceLabel">Device</string>
-    <string name="rgbwDeviceDescription">The RGBW device.</string>
+    <string name="targetLabel">Type</string>
+    <string name="targetDescription">0 to update an individual device or 1 to update a group of devices.</string>
 
-    <string name="rgbwValueLabel">Value</string>
-    <string name="rgbwValueDescription">The RGBW value.</string>
+    <string name="targetNameLabel">Name</string>
+    <string name="targetNameDescription">The name of the device or group to update.</string>
+
+    <string name="valueLabel">Value</string>
+    <string name="valueDescription">The RGBW value that should be set.</string>
 
     <!-- RGBW Error Messages -->
     <string name="rgbwErrConfig">Configuration error.</string>

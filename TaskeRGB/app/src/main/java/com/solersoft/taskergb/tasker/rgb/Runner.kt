@@ -10,10 +10,11 @@ import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResultSucess
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.ble.deviceFor
 import com.solersoft.taskergb.ble.useBasic
+import com.solersoft.taskergb.byIndex
+import com.solersoft.taskergb.devices.DeviceInfo
+import com.solersoft.taskergb.devices.DeviceManager
 import com.solersoft.taskergb.devices.RGBWDeviceBLE
 import kotlinx.coroutines.runBlocking
-import java.lang.Exception
-import java.util.*
 
 
 // Represents a Tasker action
@@ -27,8 +28,7 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
     // Add our custom plugin icon
     override val notificationProperties get() = NotificationProperties(iconResId = R.drawable.plugin)
 
-    private val defaultDeviceMacAddress = "7C:01:0A:E8:9B:D7"
-
+    /*
     suspend fun logNameAndAppearance(context: Context, deviceMacAddress: String = defaultDeviceMacAddress) {
         deviceFor(context, deviceMacAddress).useBasic { device, services ->
             services.forEach { Log.d(TAG,"Service found with UUID: ${it.uuid}") }
@@ -40,43 +40,55 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
             }
         }
     }
+     */
 
     // Performs the real work of the action
     override fun run(context: Context, input: TaskerInput<RGBWInput>): TaskerPluginResult<RGBWOutput> {
 
-        // Create shortcuts to inputs
-        var deviceInfo = input.regular.device
+        // Parse inputs
+        var targetType = TargetType::class.byIndex(input.regular.targetType)
+        var targetName = input.regular.targetName
         var value = input.regular.value
 
-        // Temporarily override values
-        deviceInfo = RGBWDeviceInfo(defaultDeviceMacAddress, "My Bulb")
-        // value = RGBWValue(0, 0, 255, 255)
+        // Validate input data
+        requireNotNull(targetName) { "${RGBWInput.VAR_TARGET_NAME} must be supplied."}
+        require(value.isValid().success) { "${RGBWValue.KEY} is not valid." }
 
-        // Make sure we have valid inputs
-        require(deviceInfo.isValid().success && value.isValid().success) {
-            context.getString(R.string.rgbwErrConfig)
+        // Obtain list of devices
+        var devices: ArrayList<DeviceInfo>
+        if (targetType == TargetType.Device) {
+            // Single device
+            devices = ArrayList<DeviceInfo>();
+            devices.add(DeviceManager.getDevice(targetName))
+        } else {
+            // Group of devices
+            devices = DeviceManager.getGroup(targetName).devices
         }
 
         // This would normally be a coroutine, but Tasker doesn't support that
         // so we have to run it blocking
         runBlocking {
-            // Placeholder
-            var device: RGBWDeviceBLE? = null
 
-            // Following may fail
-            try {
-                // Create the device
-                device = RGBWDeviceBLE(context, deviceInfo.address!!)
+            // Repeat for each device
+            devices.forEach {
 
-                // Connect to the device
-                device.connect()
+                // Placeholder
+                var device: RGBWDeviceBLE? = null
 
-                // Write the value to the device
-                device.writeValue(value)
-            }
-            finally {
-                // Always make sure the device is closed
-                device?.close()
+                // Following may fail
+                try {
+                    // Create the device
+                    device = RGBWDeviceBLE(context, it.address)
+
+                    // Connect to the device
+                    device.connect()
+
+                    // Write the value to the device
+                    device.writeValue(value)
+                } finally {
+                    // Always make sure the device is closed
+                    device?.close()
+                }
             }
         }
 

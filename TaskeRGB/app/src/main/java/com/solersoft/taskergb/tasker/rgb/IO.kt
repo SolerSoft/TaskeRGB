@@ -9,41 +9,30 @@ import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputObject
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.requireRange
-import com.solersoft.taskergb.tasker.getartists.MusicAlbum
-import java.text.SimpleDateFormat
-import java.util.*
 
+/****************************************
+ * Enums
+ ****************************************/
+enum class TargetType {
+    Device, Group
+}
 
 /****************************************
  * Inputs
  ****************************************/
 
-// Device Info
-@TaskerInputObject(RGBWDeviceInfo.KEY, R.string.rgbwDeviceLabel, R.string.rgbwDeviceDescription)
-class RGBWDeviceInfo @JvmOverloads constructor(
-        @field:TaskerInputField(VAR_ADDRESS, R.string.deviceAddressLabel, R.string.deviceAddressDescription) var address: String? = null,
-        @field:TaskerInputField(VAR_NAME, R.string.deviceNameLabel, R.string.deviceNameDescription) var name: String? = null
-) {
-    companion object {
-        const val KEY = "rgbwDeviceInfo"
-        const val VAR_ADDRESS = "address"
-        const val VAR_NAME = "name"
-    }
-
-    // Validates that the DeviceInfo contains valid data.
-    public fun isValid() : SimpleResult {
-        return SimpleResult.get {
-            require(!address.isNullOrEmpty()) { "Device address must be defined" }
-        }
-    }
-}
-
 // Main Input
 @TaskerInputRoot
 class RGBWInput @JvmOverloads constructor(
-        @field:TaskerInputObject(RGBWDeviceInfo.KEY, R.string.rgbwDeviceLabel, R.string.rgbwDeviceDescription) var device: RGBWDeviceInfo = RGBWDeviceInfo(),
-        @field:TaskerInputObject(RGBWValue.KEY, R.string.rgbwValueLabel, R.string.rgbwValueDescription) var value: RGBWValue = RGBWValue()
+        @field:TaskerInputObject(VAR_TARGET_TYPE, R.string.targetLabel, R.string.targetDescription) var targetType: Int = TargetType.Device.ordinal,
+        @field:TaskerInputObject(VAR_TARGET_NAME, R.string.targetNameLabel, R.string.targetNameDescription) var targetName: String? = null,
+        @field:TaskerInputObject(RGBWValue.KEY, R.string.valueLabel, R.string.valueDescription) var value: RGBWValue = RGBWValue()
 ) {
+
+    companion object {
+        const val VAR_TARGET_TYPE = "targetType"
+        const val VAR_TARGET_NAME = "targetName"
+    }
 
     // Validates that the DeviceInfo contains valid data.
     public fun isValid() : SimpleResult {
@@ -77,7 +66,7 @@ class RGBWOutput(val value: RGBWValue)
  * Input / Outputs
  ****************************************/
 
-@TaskerInputObject(RGBWValue.KEY, R.string.rgbwValueLabel, R.string.rgbwValueDescription)
+@TaskerInputObject(RGBWValue.KEY, R.string.valueLabel, R.string.valueDescription)
 @TaskerOutputObject()
 class RGBWValue @JvmOverloads constructor(
         @field:TaskerInputField(VAR_RED, R.string.redLabel, R.string.redDescription)

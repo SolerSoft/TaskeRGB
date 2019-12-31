@@ -9,8 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.contract
+import kotlin.reflect.KClass
 
 
 fun String.toToast(context: Context) {
@@ -57,4 +56,19 @@ public inline fun requireRange(value: Double, max: Double, min: Double=0.0, lazy
  */
 public inline fun requireRange(value: Int, max: Int, min: Int=0, lazyMessage: () -> Any): Unit {
     require((value >= min) && (value <= max), lazyMessage)
+}
+
+/**
+ * Returns the enum value at the specified index of throws an error if the index is invalid.
+ * @param index The index of the enum value to return.
+ */
+fun <T : Enum<*>> KClass<T>.byIndex(index: Int): T {
+    // Get values
+    val values = this.java.enumConstants
+
+    // Ensure sure we're in range
+    requireRange(index, values.lastIndex) { "$index is not a valid index for ${this.simpleName}"}
+
+    // Return converted type
+    return values[index]
 }
