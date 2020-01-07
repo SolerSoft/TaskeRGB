@@ -33,6 +33,7 @@ class RGBWHelper(config: TaskerPluginConfig<RGBWInput>) : TaskerPluginConfigHelp
 class ActivityConfigRGBW : ActivityConfigTasker<RGBWInput, RGBWOutput, RGBWRunner, RGBWHelper>() {
 
     private val prefName = RGBWRunner::class.simpleName;
+    private val input = RGBWInput()
 
     /**
      * Presents a color picker that allows the user to select a color.
@@ -42,7 +43,15 @@ class ActivityConfigRGBW : ActivityConfigTasker<RGBWInput, RGBWOutput, RGBWRunne
 
         // TODO: Do we need to set a starting color?
         val manager = ColorPickerPreferenceManager.getInstance(this)
-        manager.setColor(prefName, Color.RED); // manipulates the saved color data.
+
+         // Remove any saved data from last pick
+        manager.clearSavedAlphaSliderPosition(prefName)
+        manager.clearSavedBrightnessSlider(prefName)
+        manager.clearSavedColor(prefName)
+        manager.clearSavedSelectorPosition(prefName)
+
+        // Set picker to stored value
+        manager.setColor(prefName, Color.RED)
 
         // Present the dialog
         ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK)
@@ -59,6 +68,16 @@ class ActivityConfigRGBW : ActivityConfigTasker<RGBWInput, RGBWOutput, RGBWRunne
 
     open fun onColorSelected(envelope: ColorEnvelope, fromUser: Boolean) {
 
+        // Get RGB
+        val r = envelope.argb[1]
+        val g = envelope.argb[2]
+        val b = envelope.argb[3]
+
+        // Store value
+        input.value = RGBWValue(r, g, b, 0)
+
+        // Convert to hex
+        editColor.setText(input.value.toHex())
     }
 
     // Handle activity creation
@@ -94,8 +113,8 @@ class ActivityConfigRGBW : ActivityConfigTasker<RGBWInput, RGBWOutput, RGBWRunne
         // TODO: Convert controls to input data
         // TaskerInput(RGBWInput(editTextFormat.text?.toString(), editTextTimes.text?.toString()?.toIntOrNull(), editTextVariable.text?.toString(), checkBoxGetSeconds.isChecked))
 
-        // HACK: Just do new data for now
-        return TaskerInput(RGBWInput())
+        // Use class-level data
+        return TaskerInput(input)
     }
 
     /*

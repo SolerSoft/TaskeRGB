@@ -9,6 +9,7 @@ import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputObject
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.requireRange
+import java.util.*
 
 /****************************************
  * Enums
@@ -93,7 +94,16 @@ class RGBWValue @JvmOverloads constructor(
         const val VAR_WHITE = "white"
     }
 
-    // Validates that the RGBWValue contains valid data.
+    /**
+     * Converts to string hex code.
+     */
+    public fun toHex() : String {
+        return String.format(Locale.getDefault(), "%02X%02X%02X%02X", red, green, blue, white);
+    }
+
+    /**
+     * Validates that the RGBWValue contains valid data.
+     */
     public fun isValid() : SimpleResult {
         return SimpleResult.get {
             requireRange(red, 255) {"Red must be between 0 and 255"}
