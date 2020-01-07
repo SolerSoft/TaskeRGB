@@ -116,4 +116,7 @@
     <string name="hello_home_second">Hello HomeSecondFragment. Arg: %1$s</string>
     <string name="hello_devices_second">Hello Devices Second Fragment. Arg: %1$s</string>
     <string name="hello_groups_second">Hello Groups Second Fragment. Arg: %1$s</string>
+    <string name="color_label">Color</string>
+    <string name="color_hint">Tap info above or eyedropper to select.</string>
+    <string name="ellipsis">...</string>
 </resources>
