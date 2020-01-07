@@ -29,7 +29,8 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/colorPickButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colorLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/colorLabel"
+        android:importantForAutofill="no" />
 
     <ImageButton
         android:id="@+id/colorHelpButton"
@@ -38,6 +39,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="#00FFFFFF"
+        android:contentDescription="@string/info_button_description"
         app:layout_constraintStart_toEndOf="@+id/colorLabel"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_info_details" />
@@ -50,43 +52,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="#00FFFFFF"
+        android:contentDescription="@string/picker_button_description"
         android:tint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/colorText"
         app:srcCompat="@drawable/ic_color_picker_24" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Number Of Times"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="571dp" />
-
-    <EditText
-        android:id="@+id/editTextTimes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Number Of Times"
-        android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="48dp"
-        tools:layout_editor_absoluteY="409dp" />
-
-    <EditText
-        android:id="@+id/editTextVariable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Optional name of output variable"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="265dp" />
-
-    <CheckBox
-        android:id="@+id/checkBoxGetSeconds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Should get seconds"
-        tools:layout_editor_absoluteX="48dp"
-        tools:layout_editor_absoluteY="349dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

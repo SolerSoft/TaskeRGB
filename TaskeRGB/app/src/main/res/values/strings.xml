@@ -119,4 +119,6 @@
     <string name="color_label">Color</string>
     <string name="color_hint">Tap info above or eyedropper to select.</string>
     <string name="ellipsis">...</string>
+    <string name="info_button_description">Information button to provide additional details.</string>
+    <string name="picker_button_description">A picker button which allows a value to be selected.</string>
 </resources>
