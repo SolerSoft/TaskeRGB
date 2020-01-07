@@ -61,7 +61,8 @@
             android:name=".tasker.rgb.ActivityConfigRGBW"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
-            android:label="RGB Control">
+            android:label="RGB Control"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>

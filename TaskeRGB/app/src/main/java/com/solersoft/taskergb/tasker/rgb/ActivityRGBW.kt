@@ -1,17 +1,20 @@
 package com.solersoft.taskergb.tasker.rgb
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfig
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfigHelper
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
-import com.joaomgcd.taskerpluginlibrary.input.TaskerInputInfo
-import com.joaomgcd.taskerpluginlibrary.input.TaskerInputInfos
+import com.skydoves.colorpickerview.ColorEnvelope
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
+import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import com.solersoft.taskergb.R
-import com.solersoft.taskergb.selectOne
 import com.solersoft.taskergb.tasker.ActivityConfigTasker
-import com.solersoft.taskergb.toToast
 import kotlinx.android.synthetic.main.activity_config_rgb.*
-import java.util.*
+
 
 /**
  * Activity for controlling RGB and RGBW lighting.
@@ -29,12 +32,42 @@ class RGBWHelper(config: TaskerPluginConfig<RGBWInput>) : TaskerPluginConfigHelp
 // Activity class to handle UI for Tasker action configuration
 class ActivityConfigRGBW : ActivityConfigTasker<RGBWInput, RGBWOutput, RGBWRunner, RGBWHelper>() {
 
+    private val prefName = RGBWRunner::class.simpleName;
+
+    /**
+     * Presents a color picker that allows the user to select a color.
+     * This method uses @see https://github.com/skydoves/ColorPickerView
+     */
+    private fun pickColor(){
+
+        // TODO: Do we need to set a starting color?
+        val manager = ColorPickerPreferenceManager.getInstance(this)
+        manager.setColor(prefName, Color.RED); // manipulates the saved color data.
+
+        // Present the dialog
+        ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK)
+                .setTitle(R.string.color_picker_title)
+                .setPreferenceName(prefName)
+                .setPositiveButton(getString(R.string.ok),
+                        ColorEnvelopeListener { envelope, fromUser -> onColorSelected(envelope, fromUser) })
+                .setNegativeButton(getString(R.string.cancel),
+                        DialogInterface.OnClickListener { dialogInterface, _ -> dialogInterface.dismiss()})
+                .attachAlphaSlideBar(false) // default is true. If false, do not show the AlphaSlideBar.
+                .attachBrightnessSlideBar(true) // default is true. If false, do not show the BrightnessSlideBar.
+                .show()
+    }
+
+    open fun onColorSelected(envelope: ColorEnvelope, fromUser: Boolean) {
+
+    }
+
     // Handle activity creation
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // TODO: Subscribe to control events
         // editTextTimes.setOnClickListener { showVariableDialog() }
+        colorPickButton.setOnClickListener { pickColor() }
     }
 
     // Specify UI resource ID

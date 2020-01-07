@@ -121,4 +121,5 @@
     <string name="ellipsis">...</string>
     <string name="info_button_description">Information button to provide additional details.</string>
     <string name="picker_button_description">A picker button which allows a value to be selected.</string>
+    <string name="color_picker_title">Select a color</string>
 </resources>
