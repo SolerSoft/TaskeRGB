@@ -38,7 +38,6 @@
     <string name="deviceNameLabel">Name</string>
     <string name="deviceNameDescription">A name for the device.</string>
 
-
     <string name="rgbLabel">RGB</string>
     <string name="rgbDescription">The RGB component of the RGBW value (as a color).</string>
 
@@ -63,10 +62,40 @@
     <string name="valueLabel">Value</string>
     <string name="valueDescription">The RGBW value that should be set.</string>
 
+
+    <!-- Palette Inputs  -->
+    <string name="imagePathLabel">Image Path</string>
+    <string name="imagePathDescription">Path of the image to load. Can be local file or Url.</string>
+
+    <string name="color1TargetLabel">1st Color Target</string>
+    <string name="color1TargetDescription">The first color type to be detected.</string>
+
+    <string name="color2TargetLabel">2nd Color Target</string>
+    <string name="color2TargetDescription">The second color type to be detected.</string>
+
+    <string name="color3TargetLabel">3rd Color Target</string>
+    <string name="color3TargetDescription">The third color type to be detected.</string>
+
+    <string name="color4TargetLabel">4th Color Target</string>
+    <string name="color4TargetDescription">The fourth color type to be detected.</string>
+
+    <!-- Palette Outputs  -->
+    <string name="color1Label">Color 1</string>
+    <string name="color1Description">The first color detected.</string>
+
+    <string name="color2Label">Color 2</string>
+    <string name="color2Description">The second color detected.</string>
+
+    <string name="color3Label">Color 3</string>
+    <string name="color3Description">The third color detected.</string>
+
+    <string name="color4Label">Color 4</string>
+    <string name="color4Description">The fourth color detected.</string>
+
+
     <!-- RGBW Error Messages -->
     <string name="rgbwErrConfig">Configuration error.</string>
     <string name="rgbwErrDeviceUnavailable">RGBW device was unavailable.</string>
-
 
     <!-- BLE Error Messages -->
     <string name="location_permission_disabled">Location permission has been disabled.</string>

@@ -92,8 +92,8 @@ class RGBWValue @JvmOverloads constructor(
      */
     public fun isValid() : SimpleResult {
         return SimpleResult.get {
-            requireRange(rgb, min= Color.BLACK, max= Color.WHITE) {"RGB must be a valid color"}
-            requireRange(white, 255) {"White must be between 0 and 255"}
+            requireRange(rgb, min= Color.BLACK, max= Color.WHITE) {"RGB is not a valid color"}
+            requireRange(white, 255) {"White is not between 0 and 255"}
         }
     }
 

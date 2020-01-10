@@ -51,11 +51,30 @@ public inline fun requireRange(value: Double, max: Double, min: Double=0.0, lazy
 /**
  * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] doesn't
  * fall within the expected range.
- *
- * @sample samples.misc.Preconditions.failRequireWithLazyMessage
  */
 public inline fun requireRange(value: Int, max: Int, min: Int=0, lazyMessage: () -> Any): Unit {
     require((value >= min) && (value <= max), lazyMessage)
+}
+
+/**
+ * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] doesn't
+ * fall within the ordinal range of the enum type.
+ */
+public inline fun <reified T: Enum<T>> requireRange(value: Int, crossinline lazyMessage: () -> Any): Unit {
+
+    // Get the values
+    val values = enumValues<T>()
+
+    // New message function to append valid range information.
+    val newLazyMessage  = { ->
+        var msg = lazyMessage().toString()
+        if (msg.isNotEmpty()) msg = msg.plus(" ")
+        msg = msg.plus("Value must fall between 0 and ${values.lastIndex}")
+        msg.toString()
+    }
+
+    // Use range requirement with updated message function
+    require((value >= 0) && (value <= values.lastIndex), newLazyMessage)
 }
 
 /**
@@ -63,6 +82,7 @@ public inline fun requireRange(value: Int, max: Int, min: Int=0, lazyMessage: ()
  * @param index The index of the enum value to return.
  */
 fun <T : Enum<*>> KClass<T>.byIndex(index: Int): T {
+
     // Get values
     val values = this.java.enumConstants
 
