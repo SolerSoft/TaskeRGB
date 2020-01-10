@@ -50,6 +50,9 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
         var targetName = input.regular.targetName
         var value = input.regular.value
 
+        // TODO: Remove this
+        targetName = "Test"
+
         // Validate input data
         requireNotNull(targetName) { "${RGBWInput.VAR_TARGET_NAME} must be supplied."}
         require(value.isValid().success) { "${RGBWValue.KEY} is not valid." }

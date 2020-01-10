@@ -39,17 +39,20 @@
     <string name="deviceNameDescription">A name for the device.</string>
 
 
+    <string name="rgbLabel">RGB</string>
+    <string name="rgbDescription">The RGB component of the RGBW value (as a color).</string>
+
     <string name="redLabel">Red</string>
-    <string name="redDescription">The red component of the color value.</string>
+    <string name="redDescription">The Red component of the RGBW value.</string>
 
     <string name="greenLabel">Green</string>
-    <string name="greenDescription">The green component of the color value.</string>
+    <string name="greenDescription">The Green component of the RGBW value.</string>
 
     <string name="blueLabel">Blue</string>
-    <string name="blueDescription">The blue component of the color value.</string>
+    <string name="blueDescription">The Blue component of the RGBW value.</string>
 
     <string name="whiteLabel">White</string>
-    <string name="whiteDescription">The white component of the color value.</string>
+    <string name="whiteDescription">The white component of the RGBW value (as a number between 0 and 255).</string>
 
     <string name="targetLabel">Type</string>
     <string name="targetDescription">0 to update an individual device or 1 to update a group of devices.</string>

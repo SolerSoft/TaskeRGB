@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import com.beepiz.bluetooth.gattcoroutines.GattConnection
 import com.solersoft.taskergb.ble.deviceFor
-import com.solersoft.taskergb.tasker.rgb.RGBWRunner
 import com.solersoft.taskergb.tasker.rgb.RGBWValue
 import kotlinx.coroutines.withTimeout
 import java.lang.Exception
@@ -39,15 +38,15 @@ class RGBWDeviceBLE(val context: Context, val address: String) {
         // TODO: How do we combine RGB and brightness
 
         // RGB Mode
-        payload[1] = value.red.toByte()
-        payload[2] = value.green.toByte()
-        payload[3] = value.blue.toByte()
+        payload[1] = value.r
+        payload[2] = value.g
+        payload[3] = value.b
         payload[4] = 0x00.toByte() // Brightness not used
         payload[5] = 0xF0.toByte() // RGB mode specifier
 
         // Brightness Mode
         /*
-        payload[4] = value.white.toByte()
+        payload[4] = value.w
         payload[5] = 0x0F.toByte() // Brightness mode specifier
         */
 

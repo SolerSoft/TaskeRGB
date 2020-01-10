@@ -1,16 +1,11 @@
 package com.solersoft.taskergb.tasker.rgb
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
+import com.azeesoft.lib.colorpicker.ColorPickerDialog
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfig
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfigHelper
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
-import com.skydoves.colorpickerview.ColorEnvelope
-import com.skydoves.colorpickerview.ColorPickerDialog
-import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
-import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.tasker.ActivityConfigTasker
 import kotlinx.android.synthetic.main.activity_config_rgb.*
@@ -27,6 +22,13 @@ class RGBWHelper(config: TaskerPluginConfig<RGBWInput>) : TaskerPluginConfigHelp
     override val outputClass = RGBWOutput::class.java
     override fun isInputValid(input: TaskerInput<RGBWInput>) = input.regular.isValid()
     override val defaultInput = RGBWInput()
+
+    override fun addToStringBlurb(input: TaskerInput<RGBWInput>, blurbBuilder: StringBuilder) {
+        blurbBuilder.append("${context.getString(R.string.redLabel)}: ${input.regular.value.r}\n")
+        blurbBuilder.append("${context.getString(R.string.greenLabel)}: ${input.regular.value.g}\n")
+        blurbBuilder.append("${context.getString(R.string.blueLabel)}: ${input.regular.value.b}\n")
+        blurbBuilder.append("${context.getString(R.string.whiteLabel)}: ${input.regular.value.w}")
+    }
 }
 
 // Activity class to handle UI for Tasker action configuration
@@ -37,44 +39,35 @@ class ActivityConfigRGBW : ActivityConfigTasker<RGBWInput, RGBWOutput, RGBWRunne
 
     /**
      * Presents a color picker that allows the user to select a color.
-     * This method uses @see https://github.com/skydoves/ColorPickerView
+     * This method uses @see https://github.com/AzeeSoft/AndroidPhotoshopColorPicker
      */
-    private fun pickColor(){
+    private fun pickRGB() {
+
+        // Create the dialog
+        val colorPickerDialog = ColorPickerDialog.createColorPickerDialog(this, ColorPickerDialog.DARK_THEME)
+
+        // Configure the dialog
+        colorPickerDialog.hideOpacityBar();
 
         // TODO: Do we need to set a starting color?
-        val manager = ColorPickerPreferenceManager.getInstance(this)
+        colorPickerDialog.setInitialColor(Color.RED)
 
-         // Remove any saved data from last pick
-        manager.clearSavedAlphaSliderPosition(prefName)
-        manager.clearSavedBrightnessSlider(prefName)
-        manager.clearSavedColor(prefName)
-        manager.clearSavedSelectorPosition(prefName)
+        // Subscribe to events
+        colorPickerDialog.setOnColorPickedListener { color, hexVal -> onRGBPicked(color, hexVal) }
 
-        // Set picker to stored value
-        manager.setColor(prefName, Color.RED)
-
-        // Present the dialog
-        ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK)
-                .setTitle(R.string.color_picker_title)
-                .setPreferenceName(prefName)
-                .setPositiveButton(getString(R.string.ok),
-                        ColorEnvelopeListener { envelope, fromUser -> onColorSelected(envelope, fromUser) })
-                .setNegativeButton(getString(R.string.cancel),
-                        DialogInterface.OnClickListener { dialogInterface, _ -> dialogInterface.dismiss()})
-                .attachAlphaSlideBar(false) // default is true. If false, do not show the AlphaSlideBar.
-                .attachBrightnessSlideBar(true) // default is true. If false, do not show the BrightnessSlideBar.
-                .show()
+        // Show the dialog
+        colorPickerDialog.show()
     }
 
-    open fun onColorSelected(envelope: ColorEnvelope, fromUser: Boolean) {
-
-        // Get RGB
-        val r = envelope.argb[1]
-        val g = envelope.argb[2]
-        val b = envelope.argb[3]
+    /**
+     * Called when the user picks a RGB color.
+     * @param color Color picked by the user
+     * @param hexVal Color picked by the user in hexadecimal form
+     */
+    open fun onRGBPicked(color: Int, hexVal: String) {
 
         // Store value
-        input.value = RGBWValue(r, g, b, 0)
+        input.value.rgb = color
 
         // Convert to hex
         editColor.setText(input.value.toHex())
@@ -86,7 +79,7 @@ class ActivityConfigRGBW : ActivityConfigTasker<RGBWInput, RGBWOutput, RGBWRunne
 
         // TODO: Subscribe to control events
         // editTextTimes.setOnClickListener { showVariableDialog() }
-        colorPickButton.setOnClickListener { pickColor() }
+        colorPickButton.setOnClickListener { pickRGB() }
     }
 
     // Specify UI resource ID

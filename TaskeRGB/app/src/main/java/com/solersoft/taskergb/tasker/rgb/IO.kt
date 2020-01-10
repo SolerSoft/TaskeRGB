@@ -1,5 +1,7 @@
 package com.solersoft.taskergb.tasker.rgb
 
+import android.graphics.Color
+import androidx.annotation.ColorInt
 import com.joaomgcd.taskerpluginlibrary.SimpleResult
 import com.joaomgcd.taskerpluginlibrary.SimpleResultSuccess
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInputField
@@ -70,35 +72,19 @@ class RGBWOutput(val value: RGBWValue)
 @TaskerInputObject(RGBWValue.KEY, R.string.valueLabel, R.string.valueDescription)
 @TaskerOutputObject()
 class RGBWValue @JvmOverloads constructor(
-        @field:TaskerInputField(VAR_RED, R.string.redLabel, R.string.redDescription)
-        @get:TaskerOutputVariable(VAR_RED, R.string.redLabel, R.string.redDescription)
-        var red: Int = 255,
+        @field:TaskerInputField(VAR_RGB, R.string.rgbLabel, R.string.rgbDescription, ignoreInStringBlurb = true)
+        @get:TaskerOutputVariable(VAR_RGB, R.string.rgbLabel, R.string.rgbDescription)
+        @ColorInt
+        var rgb: Int = Color.BLACK,
 
-        @field:TaskerInputField(VAR_GREEN, R.string.greenLabel, R.string.greenDescription)
-        @get:TaskerOutputVariable(VAR_GREEN, R.string.greenLabel, R.string.greenDescription)
-        var green: Int = 255,
-
-        @field:TaskerInputField(VAR_BLUE, R.string.blueLabel, R.string.blueDescription)
-        @get:TaskerOutputVariable(VAR_BLUE, R.string.blueLabel, R.string.blueDescription)
-        var blue: Int = 255,
-
-        @field:TaskerInputField(VAR_WHITE, R.string.whiteLabel, R.string.whiteDescription)
+        @field:TaskerInputField(VAR_WHITE, R.string.whiteLabel, R.string.whiteDescription, ignoreInStringBlurb = true)
         @get:TaskerOutputVariable(VAR_WHITE, R.string.whiteLabel, R.string.whiteDescription)
-        var white: Int = 255
+        var white: Int = 0
 ) {
     companion object {
         const val KEY = "rgbwValue"
-        const val VAR_RED = "red"
-        const val VAR_GREEN = "green"
-        const val VAR_BLUE = "blue"
+        const val VAR_RGB = "rgb"
         const val VAR_WHITE = "white"
-    }
-
-    /**
-     * Converts to string hex code.
-     */
-    public fun toHex() : String {
-        return String.format(Locale.getDefault(), "%02X%02X%02X%02X", red, green, blue, white);
     }
 
     /**
@@ -106,10 +92,53 @@ class RGBWValue @JvmOverloads constructor(
      */
     public fun isValid() : SimpleResult {
         return SimpleResult.get {
-            requireRange(red, 255) {"Red must be between 0 and 255"}
-            requireRange(green, 255) {"Green must be between 0 and 255"}
-            requireRange(blue, 255) {"Blue must be between 0 and 255"}
+            requireRange(rgb, min= Color.BLACK, max= Color.WHITE) {"RGB must be a valid color"}
             requireRange(white, 255) {"White must be between 0 and 255"}
         }
     }
+
+    /**
+     * Converts the RGB value to string hex code.
+     */
+    public fun rgbToHex() : String {
+
+        return String.format(Locale.getDefault(), "%02X%02X%02X", r, g, b);
+    }
+
+    /**
+     * Converts entire RGBW value to string hex code.
+     */
+    public fun toHex() : String {
+
+        return String.format(Locale.getDefault(), "%02X%02X%02X%02X", r, g, b, w);
+    }
+
+    /**
+     * Converts the white value to string hex code.
+     */
+    public fun wToHex() : String {
+
+        return String.format(Locale.getDefault(), "%02X", w);
+    }
+
+
+    /**
+     * Gets the Red component of the RGBW value.
+     */
+    val r: Byte get() = ((rgb shr 16) and 0xff).toByte()
+
+    /**
+     * Gets the Green component of the RGBW value.
+     */
+    val g: Byte get() = ((rgb shr 8) and 0xff).toByte()
+
+    /**
+     * Gets the Blue component of the RGBW value.
+     */
+    val b: Byte get() = ((rgb) and 0xff).toByte()
+
+    /**
+     * Gets the White component of the RGBW value.
+     */
+    val w: Byte get() = white.toByte()
 }
