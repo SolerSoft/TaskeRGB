@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.palette.graphics.Palette
 import com.beepiz.blegattcoroutines.genericaccess.GenericAccess
+import com.beepiz.bluetooth.gattcoroutines.OperationFailedException
 import com.joaomgcd.taskerpluginlibrary.action.TaskerPluginRunnerAction
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResult
@@ -16,10 +17,12 @@ import com.solersoft.taskergb.R
 import com.solersoft.taskergb.ble.deviceFor
 import com.solersoft.taskergb.ble.useBasic
 import com.solersoft.taskergb.byIndex
+import com.solersoft.taskergb.deDynamic
 import com.solersoft.taskergb.devices.DeviceInfo
 import com.solersoft.taskergb.devices.DeviceManager
 import com.solersoft.taskergb.devices.RGBWDeviceBLE
 import kotlinx.coroutines.runBlocking
+import java.io.File
 
 
 /**
@@ -35,7 +38,18 @@ class PaletteRunner : TaskerPluginRunnerAction<PaletteInput, PaletteOutput>() {
      */
     private fun loadImage(path: String) : Bitmap {
         // TODO: Support URLs
-        return BitmapFactory.decodeFile(path)
+
+        // Remove file prefix if it's there
+        val fpath = path.replace("file://", "")
+
+        var f1 = File(fpath)
+        var f1e = f1.exists()
+
+        val ap = f1.absolutePath
+
+        // Attempt to load and make sure we got a value
+        return BitmapFactory.decodeFile(ap)
+                ?: throw IllegalArgumentException("File not found: $ap")
     }
 
     /**
@@ -66,8 +80,11 @@ class PaletteRunner : TaskerPluginRunnerAction<PaletteInput, PaletteOutput>() {
         val pi = input.regular
         pi.validate()
 
+        // De-dynamic the image path
+        val imagePath = input.deDynamic(pi.imagePath!!)
+
         // Load the image
-        val bmp = loadImage(pi.imagePath!!)
+        val bmp = loadImage(imagePath)
 
         // Create the palette builder
         val builder = Palette.from(bmp)

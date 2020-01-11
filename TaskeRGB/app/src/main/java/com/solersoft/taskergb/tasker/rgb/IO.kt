@@ -29,8 +29,8 @@ enum class TargetType {
 // Main Input
 @TaskerInputRoot
 class RGBWInput @JvmOverloads constructor(
-        @field:TaskerInputObject(VAR_TARGET_TYPE, R.string.targetLabel, R.string.targetDescription) var targetType: Int = TargetType.Device.ordinal,
-        @field:TaskerInputObject(VAR_TARGET_NAME, R.string.targetNameLabel, R.string.targetNameDescription) var targetName: String? = null,
+        @field:TaskerInputField(VAR_TARGET_TYPE, R.string.targetLabel, R.string.targetDescription) var targetType: Int = TargetType.Device.ordinal,
+        @field:TaskerInputField(VAR_TARGET_NAME, R.string.targetNameLabel, R.string.targetNameDescription) var targetName: String? = null,
         @field:TaskerInputObject(RGBWValue.KEY, R.string.valueLabel, R.string.valueDescription) var value: RGBWValue = RGBWValue()
 ) {
 

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import kotlin.reflect.KClass
 
 
@@ -104,6 +105,34 @@ fun <T : Enum<*>> KClass<T>.byIndex(index: Int): T {
     return values[index]
 }
 
-inline fun <reified T: Enum<T>> T.byNewIndex(index: Int) : T {
-    return enumValues<T>()[index]
+/**
+ * Returns the dynamic value of the specified key if found; otherwise returns a default value.
+ * @param key The dynamic key to return.
+ * @param default The default value if {@link key} is not found.
+ */
+fun <T> TaskerInput<*>.deDynamic(key: String?, default: T) : T {
+    // If key is null, return default
+    if (key == null) { return default }
+
+    // Attempt to get the info by key
+    val info = this.dynamic.getByKey(key)
+
+    // If we have the info, return its value. Otherwise default.
+    return info?.valueAs<T>() ?: default
+}
+
+/**
+ * Attempts to dereference a potential string variable to a dynamic value of the same name. If the
+ * value does not contain a variable (begins with '%') then the value will be returned.
+ */
+fun TaskerInput<*>.deDynamic(value: String) : String {
+
+    // Does it start with a percent symbol?
+    if (value.startsWith('%')) {
+        // Yes it does. Attempt to de-dynamic
+        return deDynamic<String>(value, value)
+    } else {
+        // No it does not. Use as-is.
+        return value
+    }
 }

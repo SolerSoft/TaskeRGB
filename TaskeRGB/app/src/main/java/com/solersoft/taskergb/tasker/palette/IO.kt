@@ -79,11 +79,11 @@ enum class ColorTargetType {
  */
 @TaskerInputRoot
 class PaletteInput @JvmOverloads constructor(
-        @field:TaskerInputObject(VAR_IMAGE_PATH, R.string.imagePathLabel, R.string.imagePathDescription) var imagePath: String? = null,
-        @field:TaskerInputObject(VAR_COLOR1_TARGET, R.string.color1TargetLabel, R.string.color1TargetDescription) var color1Target: String = ColorTargetType.LightVibrant.name,
-        @field:TaskerInputObject(VAR_COLOR2_TARGET, R.string.color2TargetLabel, R.string.color2TargetDescription) var color2Target: String = ColorTargetType.Vibrant.name,
-        @field:TaskerInputObject(VAR_COLOR3_TARGET, R.string.color3TargetLabel, R.string.color3TargetDescription) var color3Target: String = ColorTargetType.LightMuted.name,
-        @field:TaskerInputObject(VAR_COLOR4_TARGET, R.string.color4TargetLabel, R.string.color4TargetDescription) var color4Target: String = ColorTargetType.DarkVibrant.name
+        @field:TaskerInputField(VAR_IMAGE_PATH, R.string.imagePathLabel, R.string.imagePathDescription) var imagePath: String? = null,
+        @field:TaskerInputField(VAR_COLOR1_TARGET, R.string.color1TargetLabel, R.string.color1TargetDescription) var color1Target: String = ColorTargetType.LightVibrant.name,
+        @field:TaskerInputField(VAR_COLOR2_TARGET, R.string.color2TargetLabel, R.string.color2TargetDescription) var color2Target: String = ColorTargetType.Vibrant.name,
+        @field:TaskerInputField(VAR_COLOR3_TARGET, R.string.color3TargetLabel, R.string.color3TargetDescription) var color3Target: String = ColorTargetType.LightMuted.name,
+        @field:TaskerInputField(VAR_COLOR4_TARGET, R.string.color4TargetLabel, R.string.color4TargetDescription) var color4Target: String = ColorTargetType.DarkVibrant.name
 ) {
 
     companion object {

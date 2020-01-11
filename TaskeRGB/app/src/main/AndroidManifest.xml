@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- Features -->
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -53,6 +55,16 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="Toggle Condition">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".tasker.palette.ActivityConfigPalette"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Palette"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
