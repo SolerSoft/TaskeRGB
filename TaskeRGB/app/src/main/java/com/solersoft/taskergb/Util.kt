@@ -39,12 +39,23 @@ fun Activity.alert(title: String, message: String) {
 val RadioGroup.checkedRadioButton get() = this.findViewById<RadioButton>(checkedRadioButtonId)
 
 /**
+ * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [name] is
+ * not a valid member of the enum.
+ */
+inline fun <reified T: Enum<T>> requireName(name: String, crossinline lazyMessage: () -> Any): Unit {
+
+    // Attempt to get named value. This automatically results in an IllegalArgumentException
+    // If the string is not valid
+    enumValueOf<T>(name)
+}
+
+/**
  * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] doesn't
  * fall within the expected range.
  *
  * @sample samples.misc.Preconditions.failRequireWithLazyMessage
  */
-public inline fun requireRange(value: Double, max: Double, min: Double=0.0, lazyMessage: () -> Any): Unit {
+inline fun requireRange(value: Double, max: Double, min: Double=0.0, lazyMessage: () -> Any): Unit {
     require((value >= min) && (value <= max), lazyMessage)
 }
 
@@ -52,7 +63,7 @@ public inline fun requireRange(value: Double, max: Double, min: Double=0.0, lazy
  * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] doesn't
  * fall within the expected range.
  */
-public inline fun requireRange(value: Int, max: Int, min: Int=0, lazyMessage: () -> Any): Unit {
+inline fun requireRange(value: Int, max: Int, min: Int=0, lazyMessage: () -> Any): Unit {
     require((value >= min) && (value <= max), lazyMessage)
 }
 
@@ -60,7 +71,7 @@ public inline fun requireRange(value: Int, max: Int, min: Int=0, lazyMessage: ()
  * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] doesn't
  * fall within the ordinal range of the enum type.
  */
-public inline fun <reified T: Enum<T>> requireRange(value: Int, crossinline lazyMessage: () -> Any): Unit {
+inline fun <reified T: Enum<T>> requireRange(value: Int, crossinline lazyMessage: () -> Any): Unit {
 
     // Get the values
     val values = enumValues<T>()
@@ -87,8 +98,12 @@ fun <T : Enum<*>> KClass<T>.byIndex(index: Int): T {
     val values = this.java.enumConstants
 
     // Ensure sure we're in range
-    requireRange(index, values.lastIndex) { "$index is not a valid index for ${this.simpleName}"}
+    requireRange(index, values.lastIndex) { "$index is not a valid index for ${this.simpleName}" }
 
     // Return converted type
     return values[index]
+}
+
+inline fun <reified T: Enum<T>> T.byNewIndex(index: Int) : T {
+    return enumValues<T>()[index]
 }

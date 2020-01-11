@@ -10,6 +10,7 @@ import com.joaomgcd.taskerpluginlibrary.input.TaskerInputRoot
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputObject
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.R
+import com.solersoft.taskergb.requireName
 import com.solersoft.taskergb.requireRange
 import java.util.*
 
@@ -60,7 +61,13 @@ enum class ColorTargetType {
      * A target which has the characteristics of a vibrant color which is neither light or dark.
      * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#VIBRANT">VIBRANT</a>
      */
-    Light
+    Vibrant,
+
+    /**
+     * A target which has the greatest population (frequency) within the palette.
+     * @see <a href="https://developer.android.com/reference/kotlin/androidx/palette/graphics/Palette#getDominantSwatch()">getDominantSwatch</a>
+     */
+    Dominant
 }
 
 /****************************************
@@ -73,10 +80,10 @@ enum class ColorTargetType {
 @TaskerInputRoot
 class PaletteInput @JvmOverloads constructor(
         @field:TaskerInputObject(VAR_IMAGE_PATH, R.string.imagePathLabel, R.string.imagePathDescription) var imagePath: String? = null,
-        @field:TaskerInputObject(VAR_COLOR1_TARGET, R.string.color1TargetLabel, R.string.color1TargetDescription) var color1Target: Int = ColorTargetType.LightVibrant.ordinal,
-        @field:TaskerInputObject(VAR_COLOR2_TARGET, R.string.color2TargetLabel, R.string.color2TargetDescription) var color2Target: Int = ColorTargetType.Light.ordinal,
-        @field:TaskerInputObject(VAR_COLOR3_TARGET, R.string.color3TargetLabel, R.string.color3TargetDescription) var color3Target: Int = ColorTargetType.LightMuted.ordinal,
-        @field:TaskerInputObject(VAR_COLOR4_TARGET, R.string.color4TargetLabel, R.string.color4TargetDescription) var color4Target: Int = ColorTargetType.DarkVibrant.ordinal
+        @field:TaskerInputObject(VAR_COLOR1_TARGET, R.string.color1TargetLabel, R.string.color1TargetDescription) var color1Target: String = ColorTargetType.LightVibrant.name,
+        @field:TaskerInputObject(VAR_COLOR2_TARGET, R.string.color2TargetLabel, R.string.color2TargetDescription) var color2Target: String = ColorTargetType.Vibrant.name,
+        @field:TaskerInputObject(VAR_COLOR3_TARGET, R.string.color3TargetLabel, R.string.color3TargetDescription) var color3Target: String = ColorTargetType.LightMuted.name,
+        @field:TaskerInputObject(VAR_COLOR4_TARGET, R.string.color4TargetLabel, R.string.color4TargetDescription) var color4Target: String = ColorTargetType.DarkVibrant.name
 ) {
 
     companion object {
@@ -88,15 +95,23 @@ class PaletteInput @JvmOverloads constructor(
     }
 
     /**
-     * Indicates if the input has a valid configuration.
+     * Indicates if there is a valid configuration.
      */
-    public fun isValid() : SimpleResult {
+    fun isValid() : SimpleResult {
         return SimpleResult.get {
-            requireRange<ColorTargetType>(color1Target) {"$VAR_COLOR1_TARGET is not valid."}
-            requireRange<ColorTargetType>(color2Target) {"$VAR_COLOR2_TARGET is not valid."}
-            requireRange<ColorTargetType>(color3Target) {"$VAR_COLOR3_TARGET is not valid."}
-            requireRange<ColorTargetType>(color4Target) {"$VAR_COLOR4_TARGET is not valid."}
+            validate()
         }
+    }
+
+    /**
+     * Validates the data or throws an exception describing the error.
+     */
+    fun validate() {
+        require(!imagePath.isNullOrBlank()) {"$VAR_IMAGE_PATH is not valid."}
+        requireName<ColorTargetType>(color1Target) {"$VAR_COLOR1_TARGET is not valid."}
+        requireName<ColorTargetType>(color2Target) {"$VAR_COLOR2_TARGET is not valid."}
+        requireName<ColorTargetType>(color3Target) {"$VAR_COLOR3_TARGET is not valid."}
+        requireName<ColorTargetType>(color4Target) {"$VAR_COLOR4_TARGET is not valid."}
     }
 }
 
@@ -134,14 +149,21 @@ class PaletteOutput @JvmOverloads constructor(
     }
 
     /**
-     * Indicates if the output has a valid data.
+     * Indicates if there is valid data.
      */
-    public fun isValid() : SimpleResult {
+    fun isValid(): SimpleResult {
         return SimpleResult.get {
-            requireRange(color1, min= Color.BLACK, max= Color.WHITE) {"$VAR_COLOR1 is not a valid color"}
-            requireRange(color2, min= Color.BLACK, max= Color.WHITE) {"$VAR_COLOR2 is not a valid color"}
-            requireRange(color3, min= Color.BLACK, max= Color.WHITE) {"$VAR_COLOR3 is not a valid color"}
-            requireRange(color4, min= Color.BLACK, max= Color.WHITE) {"$VAR_COLOR4 is not a valid color"}
+            validate()
         }
+    }
+
+    /**
+     * Validates the data or throws an exception describing the error.
+     */
+    fun validate() {
+        requireRange(color1, min = Color.BLACK, max = Color.WHITE) { "$VAR_COLOR1 is not a valid color" }
+        requireRange(color2, min = Color.BLACK, max = Color.WHITE) { "$VAR_COLOR2 is not a valid color" }
+        requireRange(color3, min = Color.BLACK, max = Color.WHITE) { "$VAR_COLOR3 is not a valid color" }
+        requireRange(color4, min = Color.BLACK, max = Color.WHITE) { "$VAR_COLOR4 is not a valid color" }
     }
 }

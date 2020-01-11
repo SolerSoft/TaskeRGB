@@ -11,6 +11,8 @@ import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputObject
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.requireRange
+import com.solersoft.taskergb.tasker.palette.ColorTargetType
+import com.solersoft.taskergb.tasker.palette.PaletteInput
 import java.util.*
 
 /****************************************
@@ -37,9 +39,20 @@ class RGBWInput @JvmOverloads constructor(
         const val VAR_TARGET_NAME = "targetName"
     }
 
-    // Validates that the DeviceInfo contains valid data.
-    public fun isValid() : SimpleResult {
+    /**
+     * Indicates if there is a valid configuration.
+     */
+    fun isValid() : SimpleResult {
 
+        return SimpleResult.get {
+            validate()
+        }
+    }
+
+    /**
+     * Validates the data or throws an exception describing the error.
+     */
+    fun validate() {
         // We actually allow a misconfigured device because otherwise the
         // user will never be able to leave the configuration screen.
         /*
@@ -47,11 +60,7 @@ class RGBWInput @JvmOverloads constructor(
         if (!r.success) { return r; } */
 
         // Check value
-        var r = value.isValid()
-        if (!r.success) { return r; }
-
-        // All good
-        return SimpleResultSuccess()
+        value.validate()
     }
 }
 
@@ -88,19 +97,18 @@ class RGBWValue @JvmOverloads constructor(
     }
 
     /**
-     * Validates that the RGBWValue contains valid data.
+     * Indicates if there is valid data.
      */
-    public fun isValid() : SimpleResult {
+    fun isValid() : SimpleResult {
         return SimpleResult.get {
-            requireRange(rgb, min= Color.BLACK, max= Color.WHITE) {"RGB is not a valid color"}
-            requireRange(white, 255) {"White is not between 0 and 255"}
+            validate()
         }
     }
 
     /**
      * Converts the RGB value to string hex code.
      */
-    public fun rgbToHex() : String {
+    fun rgbToHex() : String {
 
         return String.format(Locale.getDefault(), "%02X%02X%02X", r, g, b);
     }
@@ -108,7 +116,7 @@ class RGBWValue @JvmOverloads constructor(
     /**
      * Converts entire RGBW value to string hex code.
      */
-    public fun toHex() : String {
+    fun toHex() : String {
 
         return String.format(Locale.getDefault(), "%02X%02X%02X%02X", r, g, b, w);
     }
@@ -116,11 +124,18 @@ class RGBWValue @JvmOverloads constructor(
     /**
      * Converts the white value to string hex code.
      */
-    public fun wToHex() : String {
+    fun wToHex() : String {
 
         return String.format(Locale.getDefault(), "%02X", w);
     }
 
+    /**
+     * Validates the data or throws an exception describing the error.
+     */
+    fun validate() {
+        requireRange(rgb, min= Color.BLACK, max= Color.WHITE) {"RGB is not a valid color"}
+        requireRange(white, 255) {"White is not between 0 and 255"}
+    }
 
     /**
      * Gets the Red component of the RGBW value.
