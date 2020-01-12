@@ -10,9 +10,11 @@ import com.joaomgcd.taskerpluginlibrary.input.TaskerInputRoot
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputObject
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.R
+import com.solersoft.taskergb.VAR_PREFIX
 import com.solersoft.taskergb.requireRange
 import com.solersoft.taskergb.tasker.palette.ColorTargetType
 import com.solersoft.taskergb.tasker.palette.PaletteInput
+import com.solersoft.taskergb.withPrefix
 import java.util.*
 
 /****************************************
@@ -35,8 +37,8 @@ class RGBWInput @JvmOverloads constructor(
 ) {
 
     companion object {
-        const val VAR_TARGET_TYPE = "targetType"
-        const val VAR_TARGET_NAME = "targetName"
+        const val VAR_TARGET_TYPE = VAR_PREFIX + "targettype"
+        const val VAR_TARGET_NAME = VAR_PREFIX + "targetname"
     }
 
     /**
@@ -91,9 +93,9 @@ class RGBWValue @JvmOverloads constructor(
         var white: Int = 0
 ) {
     companion object {
-        const val KEY = "rgbwValue"
-        const val VAR_RGB = "rgb"
-        const val VAR_WHITE = "white"
+        const val KEY = VAR_PREFIX + "rgbw"
+        const val VAR_RGB = VAR_PREFIX + "rgb"
+        const val VAR_WHITE = VAR_PREFIX + "white"
     }
 
     /**

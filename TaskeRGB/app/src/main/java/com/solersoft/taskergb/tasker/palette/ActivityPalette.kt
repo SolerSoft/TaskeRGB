@@ -9,6 +9,7 @@ import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.selectOne
 import com.solersoft.taskergb.tasker.ActivityConfigTasker
+import com.solersoft.taskergb.tasker.rgb.RGBWInput
 import com.solersoft.taskergb.toToast
 import kotlinx.android.synthetic.main.activity_config_gettime.*
 import kotlinx.android.synthetic.main.activity_config_palette.*
@@ -27,6 +28,11 @@ class PaletteHelper(config: TaskerPluginConfig<PaletteInput>) : TaskerPluginConf
     override val outputClass = PaletteOutput::class.java
     override fun isInputValid(input: TaskerInput<PaletteInput>) = input.regular.isValid()
     override val defaultInput = PaletteInput()
+
+    override fun addToStringBlurb(input: TaskerInput<PaletteInput>, blurbBuilder: StringBuilder) {
+        super.addToStringBlurb(input, blurbBuilder)
+        blurbBuilder.append("\n${context.getString(R.string.defaultColorLabel)}: ${Integer.toHexString(input.regular.defaultColor)}")
+    }
 }
 
 // Activity class to handle UI for Tasker action configuration

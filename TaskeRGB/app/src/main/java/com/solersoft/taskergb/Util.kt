@@ -12,6 +12,17 @@ import android.widget.Toast
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import kotlin.reflect.KClass
 
+/**
+ * The prefix used for all tasker variables
+ */
+const val VAR_PREFIX = "tr"
+
+/**
+ * Returns the contents of the string prepended with prefix.
+ */
+fun String.withPrefix() : String {
+    return VAR_PREFIX.plus(this)
+}
 
 fun String.toToast(context: Context) {
     Handler(Looper.getMainLooper()).post { Toast.makeText(context, this, Toast.LENGTH_LONG).show() }

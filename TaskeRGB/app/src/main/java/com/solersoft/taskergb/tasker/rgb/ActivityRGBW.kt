@@ -28,6 +28,7 @@ class RGBWHelper(config: TaskerPluginConfig<RGBWInput>) : TaskerPluginConfigHelp
         blurbBuilder.append("${context.getString(R.string.greenLabel)}: ${input.regular.value.g}\n")
         blurbBuilder.append("${context.getString(R.string.blueLabel)}: ${input.regular.value.b}\n")
         blurbBuilder.append("${context.getString(R.string.whiteLabel)}: ${input.regular.value.w}")
+        super.addToStringBlurb(input, blurbBuilder)
     }
 }
 

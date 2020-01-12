@@ -10,6 +10,7 @@ import com.joaomgcd.taskerpluginlibrary.input.TaskerInputRoot
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputObject
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.R
+import com.solersoft.taskergb.VAR_PREFIX
 import com.solersoft.taskergb.requireName
 import com.solersoft.taskergb.requireRange
 import java.util.*
@@ -23,11 +24,6 @@ import java.util.*
  */
 enum class ColorTargetType {
     /**
-     * No color target selected. The color will be Black.
-     */
-    None,
-
-    /**
      * A target which has the characteristics of a muted color which is dark in luminance.
      * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_MUTED">DARK_MUTED</a>
      */
@@ -38,6 +34,12 @@ enum class ColorTargetType {
      * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_VIBRANT">DARK_VIBRANT</a>
      */
     DarkVibrant,
+
+    /**
+     * A target which has the characteristics of a color which shows up most frequently.
+     * @see <a href="https://developer.android.com/reference/kotlin/androidx/palette/graphics/Palette#getDominantSwatch()">getDominantSwatch</a>
+     */
+    Dominant,
 
     /**
      * A target which has the characteristics of a muted color which is light in luminance.
@@ -61,13 +63,7 @@ enum class ColorTargetType {
      * A target which has the characteristics of a vibrant color which is neither light or dark.
      * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#VIBRANT">VIBRANT</a>
      */
-    Vibrant,
-
-    /**
-     * A target which has the greatest population (frequency) within the palette.
-     * @see <a href="https://developer.android.com/reference/kotlin/androidx/palette/graphics/Palette#getDominantSwatch()">getDominantSwatch</a>
-     */
-    Dominant
+    Vibrant
 }
 
 /****************************************
@@ -80,18 +76,12 @@ enum class ColorTargetType {
 @TaskerInputRoot
 class PaletteInput @JvmOverloads constructor(
         @field:TaskerInputField(VAR_IMAGE_PATH, R.string.imagePathLabel, R.string.imagePathDescription) var imagePath: String? = null,
-        @field:TaskerInputField(VAR_COLOR1_TARGET, R.string.color1TargetLabel, R.string.color1TargetDescription) var color1Target: String = ColorTargetType.LightVibrant.name,
-        @field:TaskerInputField(VAR_COLOR2_TARGET, R.string.color2TargetLabel, R.string.color2TargetDescription) var color2Target: String = ColorTargetType.Vibrant.name,
-        @field:TaskerInputField(VAR_COLOR3_TARGET, R.string.color3TargetLabel, R.string.color3TargetDescription) var color3Target: String = ColorTargetType.LightMuted.name,
-        @field:TaskerInputField(VAR_COLOR4_TARGET, R.string.color4TargetLabel, R.string.color4TargetDescription) var color4Target: String = ColorTargetType.DarkVibrant.name
+        @field:TaskerInputField(VAR_DEFAULT_COLOR, R.string.defaultColorLabel, R.string.defaultColorDescription, ignoreInStringBlurb = true) @ColorInt var defaultColor: Int = Color.BLACK
 ) {
 
     companion object {
-        const val VAR_IMAGE_PATH = "imagePath"
-        const val VAR_COLOR1_TARGET = "color1Target"
-        const val VAR_COLOR2_TARGET = "color2Target"
-        const val VAR_COLOR3_TARGET = "color3Target"
-        const val VAR_COLOR4_TARGET = "color4Target"
+        const val VAR_IMAGE_PATH = VAR_PREFIX + "imagepath"
+        const val VAR_DEFAULT_COLOR = VAR_PREFIX + "defaultcolor"
     }
 
     /**
@@ -108,10 +98,7 @@ class PaletteInput @JvmOverloads constructor(
      */
     fun validate() {
         require(!imagePath.isNullOrBlank()) {"$VAR_IMAGE_PATH is not valid."}
-        requireName<ColorTargetType>(color1Target) {"$VAR_COLOR1_TARGET is not valid."}
-        requireName<ColorTargetType>(color2Target) {"$VAR_COLOR2_TARGET is not valid."}
-        requireName<ColorTargetType>(color3Target) {"$VAR_COLOR3_TARGET is not valid."}
-        requireName<ColorTargetType>(color4Target) {"$VAR_COLOR4_TARGET is not valid."}
+        requireRange(defaultColor, min = Color.BLACK, max = Color.WHITE) { "$VAR_DEFAULT_COLOR is not a valid color" }
     }
 }
 
@@ -125,27 +112,42 @@ class PaletteInput @JvmOverloads constructor(
  */
 @TaskerOutputObject()
 class PaletteOutput @JvmOverloads constructor(
-        @get:TaskerOutputVariable(VAR_COLOR1, R.string.color1Label, R.string.color1Description)
+        @get:TaskerOutputVariable(VAR_DARK_MUTED, R.string.darkMutedLabel, R.string.darkMutedDescription)
         @ColorInt
-        var color1: Int = Color.BLACK,
+        var darkMuted: Int = Color.BLACK,
 
-        @get:TaskerOutputVariable(VAR_COLOR2, R.string.color2Label, R.string.color2Description)
+        @get:TaskerOutputVariable(VAR_DARK_VIBRANT, R.string.darkVibrantLabel, R.string.darkVibrantDescription)
         @ColorInt
-        var color2: Int = Color.BLACK,
+        var darkVibrant: Int = Color.BLACK,
 
-        @get:TaskerOutputVariable(VAR_COLOR3, R.string.color3Label, R.string.color3Description)
+        @get:TaskerOutputVariable(VAR_DOMINANT, R.string.dominantLabel, R.string.dominantDescription)
         @ColorInt
-        var color3: Int = Color.BLACK,
+        var dominant: Int = Color.BLACK,
 
-        @get:TaskerOutputVariable(VAR_COLOR4, R.string.color4Label, R.string.color4Description)
+        @get:TaskerOutputVariable(VAR_LIGHT_MUTED, R.string.lightMutedLabel, R.string.lightMutedDescription)
         @ColorInt
-        var color4: Int = Color.BLACK
-) {
+        var lightMuted: Int = Color.BLACK,
+
+        @get:TaskerOutputVariable(VAR_LIGHT_VIBRANT, R.string.lightVibrantLabel, R.string.lightVibrantDescription)
+        @ColorInt
+        var lightVibrant: Int = Color.BLACK,
+
+        @get:TaskerOutputVariable(VAR_MUTED, R.string.mutedLabel, R.string.mutedDescription)
+        @ColorInt
+        var muted: Int = Color.BLACK,
+
+        @get:TaskerOutputVariable(VAR_VIBRANT, R.string.vibrantLabel, R.string.vibrantDescription)
+        @ColorInt
+        var vibrant: Int = Color.BLACK
+    ) {
     companion object {
-        const val VAR_COLOR1 = "color1"
-        const val VAR_COLOR2 = "color2"
-        const val VAR_COLOR3 = "color3"
-        const val VAR_COLOR4 = "color4"
+        const val VAR_DARK_MUTED = VAR_PREFIX + "darkmuted"
+        const val VAR_DARK_VIBRANT = VAR_PREFIX + "darkvibrant"
+        const val VAR_DOMINANT = VAR_PREFIX + "dominant"
+        const val VAR_LIGHT_MUTED = VAR_PREFIX + "lightmuted"
+        const val VAR_LIGHT_VIBRANT = VAR_PREFIX + "lightvibrant"
+        const val VAR_MUTED = VAR_PREFIX + "muted"
+        const val VAR_VIBRANT = VAR_PREFIX + "vibrant"
     }
 
     /**
@@ -161,9 +163,16 @@ class PaletteOutput @JvmOverloads constructor(
      * Validates the data or throws an exception describing the error.
      */
     fun validate() {
-        requireRange(color1, min = Color.BLACK, max = Color.WHITE) { "$VAR_COLOR1 is not a valid color" }
-        requireRange(color2, min = Color.BLACK, max = Color.WHITE) { "$VAR_COLOR2 is not a valid color" }
-        requireRange(color3, min = Color.BLACK, max = Color.WHITE) { "$VAR_COLOR3 is not a valid color" }
-        requireRange(color4, min = Color.BLACK, max = Color.WHITE) { "$VAR_COLOR4 is not a valid color" }
+        ColorTargetType.values().forEach {
+            when (it) {
+                ColorTargetType.DarkMuted -> requireRange(darkMuted, min = Color.BLACK, max = Color.WHITE) { "$VAR_DARK_MUTED is not a valid color" }
+                ColorTargetType.DarkVibrant -> requireRange(darkVibrant, min = Color.BLACK, max = Color.WHITE) { "$VAR_DARK_VIBRANT is not a valid color" }
+                ColorTargetType.Dominant -> requireRange(dominant, min = Color.BLACK, max = Color.WHITE) { "$VAR_DOMINANT is not a valid color" }
+                ColorTargetType.LightMuted -> requireRange(lightMuted, min = Color.BLACK, max = Color.WHITE) { "$VAR_LIGHT_MUTED is not a valid color" }
+                ColorTargetType.LightVibrant -> requireRange(lightVibrant, min = Color.BLACK, max = Color.WHITE) { "$VAR_LIGHT_MUTED is not a valid color" }
+                ColorTargetType.Muted -> requireRange(muted, min = Color.BLACK, max = Color.WHITE) { "$VAR_MUTED is not a valid color" }
+                ColorTargetType.Vibrant -> requireRange(vibrant, min = Color.BLACK, max = Color.WHITE) { "$VAR_VIBRANT is not a valid color" }
+            }
+        }
     }
 }
