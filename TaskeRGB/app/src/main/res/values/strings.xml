@@ -71,6 +71,14 @@
     <string name="defaultColorDescription">Default to use when a color is missing from a palette.</string>
 
 
+    <!-- Palette Entries  -->
+    <string name="entryNameLabel">Name</string>
+    <string name="entryNameDescription">The name of the palette entry.</string>
+
+    <string name="entryColorLabel">Color</string>
+    <string name="entryColorDescription">The color of the palette entry.</string>
+
+
     <!-- Palette Outputs  -->
     <string name="darkMutedLabel">Dark Muted</string>
     <string name="darkMutedDescription">A muted color which is dark in luminance.</string>
@@ -92,6 +100,9 @@
 
     <string name="vibrantLabel">Vibrant</string>
     <string name="vibrantDescription">A vibrant color which is neither light or dark.</string>
+
+    <string name="allColorsLabel">All Colors</string>
+    <string name="allColorsDescription">An array of all colors in the palette.</string>
 
 
     <!-- RGBW Error Messages -->

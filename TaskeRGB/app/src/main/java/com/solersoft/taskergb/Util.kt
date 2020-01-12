@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.annotation.ColorInt
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import kotlin.reflect.KClass
 
@@ -22,6 +23,13 @@ const val VAR_PREFIX = "tr"
  */
 fun String.withPrefix() : String {
     return VAR_PREFIX.plus(this)
+}
+
+/**
+ * Converts a ColorInt integer to a Tasker color string.
+ */
+fun Int.toTaskerColor() : String {
+    return "#".plus(Integer.toHexString(this))
 }
 
 fun String.toToast(context: Context) {
@@ -59,6 +67,17 @@ inline fun <reified T: Enum<T>> requireName(name: String, crossinline lazyMessag
     // Attempt to get named value. This automatically results in an IllegalArgumentException
     // If the string is not valid
     enumValueOf<T>(name)
+}
+
+/**
+ * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] isn't
+ * formatted as a tasker color string.
+ *
+ * @sample samples.misc.Preconditions.failRequireWithLazyMessage
+ */
+inline fun requireTaskerColor(value: String, lazyMessage: () -> Any): Unit {
+    require(value.startsWith('#'), lazyMessage)
+    require(value.length >= 7, lazyMessage)
 }
 
 /**

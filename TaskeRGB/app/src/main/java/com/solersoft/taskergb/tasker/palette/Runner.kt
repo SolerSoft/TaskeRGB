@@ -4,28 +4,14 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.util.Log
 import androidx.annotation.ColorInt
-import androidx.core.view.OneShotPreDrawListener.add
 import androidx.palette.graphics.Palette
-import com.beepiz.blegattcoroutines.genericaccess.GenericAccess
-import com.beepiz.bluetooth.gattcoroutines.OperationFailedException
+import androidx.palette.graphics.Target
 import com.joaomgcd.taskerpluginlibrary.action.TaskerPluginRunnerAction
-import com.joaomgcd.taskerpluginlibrary.action.TaskerPluginRunnerActionNoOutput
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
-import com.joaomgcd.taskerpluginlibrary.output.runner.TaskerOutputForRunner
-import com.joaomgcd.taskerpluginlibrary.output.runner.TaskerOutputsForRunner
-import com.joaomgcd.taskerpluginlibrary.output.runner.TaskerValueGetterDirect
-import com.joaomgcd.taskerpluginlibrary.output.runner.TaskerValueGetterMethod
 import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResult
 import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResultSucess
 import com.solersoft.taskergb.*
-import com.solersoft.taskergb.ble.deviceFor
-import com.solersoft.taskergb.ble.useBasic
-import com.solersoft.taskergb.devices.DeviceInfo
-import com.solersoft.taskergb.devices.DeviceManager
-import com.solersoft.taskergb.devices.RGBWDeviceBLE
-import kotlinx.coroutines.runBlocking
 import java.io.File
 
 
@@ -94,25 +80,100 @@ class PaletteRunner : TaskerPluginRunnerAction<PaletteInput, PaletteOutput>() {
 
         // Configure the palette builder
         // TODO: Is this necessary?
+        ColorTargetType.values().forEach {
+            when (it) {
+                ColorTargetType.DarkMuted -> builder.addTarget(Target.DARK_MUTED)
+                ColorTargetType.DarkVibrant -> builder.addTarget(Target.DARK_VIBRANT)
+                ColorTargetType.Dominant -> Unit
+                ColorTargetType.LightMuted -> builder.addTarget(Target.LIGHT_MUTED)
+                ColorTargetType.LightVibrant -> builder.addTarget(Target.LIGHT_VIBRANT)
+                ColorTargetType.Muted -> builder.addTarget(Target.MUTED)
+                ColorTargetType.Vibrant -> builder.addTarget(Target.VIBRANT)
+            }
+        }
+
+        // Add more colors (default is 16)
+        builder.maximumColorCount(32)
 
         // Build the palette
         val palette = builder.generate()
 
-        // Create the output
+        // Create output arrays
+        val allColors = ArrayList<String>()
+        val darkColors = ArrayList<String>()
+        val lightColors = ArrayList<String>()
+        val mutedColors = ArrayList<String>()
+        val vibrantColors = ArrayList<String>()
+
+        // Create the output object
         val po = PaletteOutput()
 
         // Read the desired input targets from the palette and assign them to outputs
         ColorTargetType.values().forEach {
+
+            // Get the color for the palette entry
+            var color = palette.getColorForTarget(it, pi.defaultColor)
+            var tcolor = color.toTaskerColor()
+
+            // Parse entry into various arrays
             when (it) {
-                ColorTargetType.DarkMuted -> po.darkMuted = palette.getDarkMutedColor(pi.defaultColor)
-                ColorTargetType.DarkVibrant -> po.darkVibrant = palette.getDarkVibrantColor(pi.defaultColor)
-                ColorTargetType.Dominant -> po.dominant = palette.getDominantColor(pi.defaultColor)
-                ColorTargetType.LightMuted -> po.lightMuted = palette.getLightMutedColor(pi.defaultColor)
-                ColorTargetType.LightVibrant -> po.lightVibrant = palette.getLightVibrantColor(pi.defaultColor)
-                ColorTargetType.Muted -> po.muted = palette.getMutedColor(pi.defaultColor)
-                ColorTargetType.Vibrant -> po.vibrant = palette.getVibrantColor(pi.defaultColor)
+                ColorTargetType.DarkMuted -> {
+                    po.darkMuted = tcolor
+                    if (color != pi.defaultColor) {
+                        allColors.add(tcolor)
+                        darkColors.add(tcolor)
+                        mutedColors.add(tcolor)
+                    }
+                }
+                ColorTargetType.DarkVibrant -> {
+                    po.darkVibrant = tcolor
+                    if (color != pi.defaultColor) {
+                        allColors.add(tcolor)
+                        darkColors.add(tcolor)
+                        vibrantColors.add(tcolor)
+                    }
+                }
+                ColorTargetType.Dominant -> {
+                    po.dominant = tcolor
+                    if (color != pi.defaultColor) {
+                        allColors.add(tcolor)
+                    }
+                }
+                ColorTargetType.LightMuted -> {
+                    po.lightMuted = tcolor
+                    if (color != pi.defaultColor) {
+                        allColors.add(tcolor)
+                        lightColors.add(tcolor)
+                        mutedColors.add(tcolor)
+                    }
+                }
+                ColorTargetType.LightVibrant -> {
+                    po.lightVibrant = tcolor
+                    if (color != pi.defaultColor) {
+                        allColors.add(tcolor)
+                        lightColors.add(tcolor)
+                        vibrantColors.add(tcolor)
+                    }
+                }
+                ColorTargetType.Muted -> {
+                    po.muted = tcolor
+                    if (color != pi.defaultColor) {
+                        allColors.add(tcolor)
+                        mutedColors.add(tcolor)
+                    }
+                }
+                ColorTargetType.Vibrant -> {
+                    po.vibrant = tcolor
+                    if (color != pi.defaultColor) {
+                        allColors.add(tcolor)
+                        vibrantColors.add(tcolor)
+                    }
+                }
             }
         }
+
+        // Assign output arrays
+        po.allColors = allColors.toTypedArray()
 
         // Done!
         return TaskerPluginResultSucess(po)
