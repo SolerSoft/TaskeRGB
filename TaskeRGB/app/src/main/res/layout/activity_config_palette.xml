@@ -55,4 +55,34 @@
         app:layout_constraintTop_toTopOf="@id/editFilePath"
         tools:srcCompat="@drawable/ic_color_picker_24" />
 
+    <Button
+        android:id="@+id/testButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editFilePath" />
+
+    <ImageView
+        android:id="@+id/imageViewer"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/loaded_image_description"
+        app:layout_constraintTop_toBottomOf="@+id/testButton"
+        tools:layout_editor_absoluteX="56dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

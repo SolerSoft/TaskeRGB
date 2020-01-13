@@ -3,6 +3,7 @@ package com.solersoft.taskergb
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.widget.ArrayAdapter
@@ -17,6 +18,15 @@ import kotlin.reflect.KClass
  * The prefix used for all tasker variables
  */
 const val VAR_PREFIX = "tr"
+
+/**
+ * Ensures the item is only added to the list once.
+ */
+fun <E> ArrayList<E>.addUnique(item: E){
+    if (!this.contains(item)) {
+        this.add(item)
+    }
+}
 
 /**
  * Returns the contents of the string prepended with prefix.
@@ -149,20 +159,4 @@ fun <T> TaskerInput<*>.deDynamic(key: String?, default: T) : T {
 
     // If we have the info, return its value. Otherwise default.
     return info?.valueAs<T>() ?: default
-}
-
-/**
- * Attempts to dereference a potential string variable to a dynamic value of the same name. If the
- * value does not contain a variable (begins with '%') then the value will be returned.
- */
-fun TaskerInput<*>.deDynamic(value: String) : String {
-
-    // Does it start with a percent symbol?
-    if (value.startsWith('%')) {
-        // Yes it does. Attempt to de-dynamic
-        return deDynamic<String>(value, value)
-    } else {
-        // No it does not. Use as-is.
-        return value
-    }
 }

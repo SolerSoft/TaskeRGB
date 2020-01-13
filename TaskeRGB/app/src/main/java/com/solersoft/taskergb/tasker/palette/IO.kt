@@ -10,57 +10,6 @@ import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.*
 
 /****************************************
- * Enums
- ****************************************/
-
-/**
- * Defines the types of color targets that can be detected in an image.
- */
-enum class ColorTargetType {
-    /**
-     * A target which has the characteristics of a muted color which is dark in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_MUTED">DARK_MUTED</a>
-     */
-    DarkMuted,
-
-    /**
-     * A target which has the characteristics of a vibrant color which is dark in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_VIBRANT">DARK_VIBRANT</a>
-     */
-    DarkVibrant,
-
-    /**
-     * A target which has the characteristics of a color which shows up most frequently.
-     * @see <a href="https://developer.android.com/reference/kotlin/androidx/palette/graphics/Palette#getDominantSwatch()">getDominantSwatch</a>
-     */
-    Dominant,
-
-    /**
-     * A target which has the characteristics of a muted color which is light in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#LIGHT_MUTED">LIGHT_MUTED</a>
-     */
-    LightMuted,
-
-    /**
-     * A target which has the characteristics of a vibrant color which is light in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#LIGHT_VIBRANT">LIGHT_VIBRANT</a>
-     */
-    LightVibrant,
-
-    /**
-     * A target which has the characteristics of a muted color which is neither light or dark.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#MUTED">MUTED</a>
-     */
-    Muted,
-
-    /**
-     * A target which has the characteristics of a vibrant color which is neither light or dark.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#VIBRANT">VIBRANT</a>
-     */
-    Vibrant
-}
-
-/****************************************
  * Inputs
  ****************************************/
 
@@ -70,11 +19,13 @@ enum class ColorTargetType {
 @TaskerInputRoot
 class PaletteInput @JvmOverloads constructor(
         @field:TaskerInputField(VAR_IMAGE_PATH, R.string.imagePathLabel, R.string.imagePathDescription) var imagePath: String? = null,
-        @field:TaskerInputField(VAR_DEFAULT_COLOR, R.string.defaultColorLabel, R.string.defaultColorDescription, ignoreInStringBlurb = true) @ColorInt var defaultColor: Int = Color.BLACK
+        @field:TaskerInputField(VAR_COLOR_COUNT, R.string.defaultColorLabel, R.string.defaultColorDescription, ignoreInStringBlurb = true) var colorCount: Int = 32,
+        @field:TaskerInputField(VAR_DEFAULT_COLOR, R.string.defaultColorLabel, R.string.defaultColorDescription) var defaultColor: String = Color.BLACK.toTaskerColor()
 ) {
 
     companion object {
         const val VAR_IMAGE_PATH = VAR_PREFIX + "imagepath"
+        const val VAR_COLOR_COUNT = VAR_PREFIX + "colorcount"
         const val VAR_DEFAULT_COLOR = VAR_PREFIX + "defaultcolor"
     }
 
@@ -92,7 +43,8 @@ class PaletteInput @JvmOverloads constructor(
      */
     fun validate() {
         require(!imagePath.isNullOrBlank()) {"$VAR_IMAGE_PATH is not valid."}
-        requireRange(defaultColor, min = Color.BLACK, max = Color.WHITE) { "$VAR_DEFAULT_COLOR is not a valid color" }
+        requireRange(colorCount, min = 1, max = 255) { "$VAR_COLOR_COUNT must be between 1 and 255" }
+        requireTaskerColor(defaultColor) { "$VAR_DEFAULT_COLOR is not a valid color" }
     }
 }
 
@@ -113,10 +65,11 @@ class PaletteEntry(
 }
 
 /**
- * Output for the Palette action.
+ * Tasker output for the Palette action.
  */
 @TaskerOutputObject()
 class PaletteOutput @JvmOverloads constructor(
+        // Named Values
         @get:TaskerOutputVariable(VAR_DARK_MUTED, R.string.darkMutedLabel, R.string.darkMutedDescription)
         var darkMuted: String = DEFAULT_COLOR,
 
@@ -138,6 +91,7 @@ class PaletteOutput @JvmOverloads constructor(
         @get:TaskerOutputVariable(VAR_VIBRANT, R.string.vibrantLabel, R.string.vibrantDescription)
         var vibrant: String = DEFAULT_COLOR,
 
+        // Collections of Values
         @get:TaskerOutputVariable(VAR_ALL_COLORS, R.string.allColorsLabel, R.string.allColorsDescription)
         var allColors: Array<String> = arrayOf<String>()
     ) {
@@ -179,4 +133,20 @@ class PaletteOutput @JvmOverloads constructor(
         }
         allColors.forEach { requireTaskerColor(it) { "$VAR_ALL_COLORS contains an invalid entry"} }
     }
+}
+
+/**
+ * Converts a {@link PaletteResult} to a {@link PaletteOutput}
+ */
+inline fun PaletteResult.toTasker() : PaletteOutput {
+    return PaletteOutput(
+            darkMuted =  this.darkMuted.toTaskerColor(),
+            darkVibrant = this.darkVibrant.toTaskerColor(),
+            dominant = this.dominant.toTaskerColor(),
+            lightMuted = this.lightMuted.toTaskerColor(),
+            lightVibrant = this.lightVibrant.toTaskerColor(),
+            muted = this.muted.toTaskerColor(),
+            vibrant = this.vibrant.toTaskerColor(),
+            allColors = this.allColors.map { c -> c.toTaskerColor() }.toTypedArray()
+    )
 }

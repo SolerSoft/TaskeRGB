@@ -1,5 +1,6 @@
 package com.solersoft.taskergb.tasker.palette
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import com.azeesoft.lib.colorpicker.ColorPickerDialog
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_config_gettime.*
 import kotlinx.android.synthetic.main.activity_config_palette.*
 import kotlinx.android.synthetic.main.activity_config_rgb.*
 import kotlinx.android.synthetic.main.activity_config_rgb.colorPickButton
+import java.lang.Exception
 
 
 /**
@@ -29,10 +31,11 @@ class PaletteHelper(config: TaskerPluginConfig<PaletteInput>) : TaskerPluginConf
     override fun isInputValid(input: TaskerInput<PaletteInput>) = input.regular.isValid()
     override val defaultInput = PaletteInput()
 
+    /*
     override fun addToStringBlurb(input: TaskerInput<PaletteInput>, blurbBuilder: StringBuilder) {
         super.addToStringBlurb(input, blurbBuilder)
         blurbBuilder.append("\n${context.getString(R.string.defaultColorLabel)}: ${Integer.toHexString(input.regular.defaultColor)}")
-    }
+    }*/
 }
 
 // Activity class to handle UI for Tasker action configuration
@@ -44,6 +47,7 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
 
         // Subscribe to control events
         colorPickButton.setOnClickListener { showVariableDialog() }
+        testButton.setOnClickListener { runTest() }
     }
 
     // Specify UI resource ID
@@ -70,6 +74,31 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
 
         // Use class-level data
         return TaskerInput(input)
+    }
+
+    private fun runTest() {
+        try{
+
+            // Get the input
+            val input = inputForTasker.regular
+
+            // Process dynamic variables
+            // TODO: Actually use file
+            input.imagePath = "file:///storage/emulated/0/Android/data/com.joaomgcd.autonotification/files/com.spotify.music_-102440555"
+
+            // Run the task and get the output
+            var output = PaletteAction.run(input)
+
+            // Set test controls
+            imageViewer.setImageBitmap(output.loadedImage)
+        }
+        catch (e: Exception){
+            with (AlertDialog.Builder(this)) {
+                setTitle("Error")
+                setMessage(e.message)
+                create().show()
+            }
+        }
     }
 
     private fun showVariableDialog() {
