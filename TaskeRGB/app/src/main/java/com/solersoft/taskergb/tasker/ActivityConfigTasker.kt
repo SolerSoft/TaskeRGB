@@ -20,6 +20,8 @@ abstract class ActivityConfigTasker<TInput : Any, TOutput : Any, TActionRunner :
     protected val taskerHelper by lazy { getNewHelper(this) }
 
     open val isConfigurable = true
+    open val shouldSetContentView = true
+
     override val context get() = applicationContext
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +29,9 @@ abstract class ActivityConfigTasker<TInput : Any, TOutput : Any, TActionRunner :
             taskerHelper.finishForTasker()
             return
         }
-        setContentView(layoutResId)
+        if (shouldSetContentView) {
+            setContentView(layoutResId)
+        }
         taskerHelper.onCreate()
     }
 

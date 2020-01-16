@@ -6,60 +6,10 @@ import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.palette.graphics.Palette
 import androidx.palette.graphics.Target
+import com.solersoft.taskergb.BR
 import com.solersoft.taskergb.addUnique
 import com.solersoft.taskergb.toTaskerColor
 import java.io.File
-
-/****************************************
- * Enums
- ****************************************/
-
-/**
- * Defines the types of color targets that can be detected in an image.
- */
-enum class ColorTargetType {
-    /**
-     * A target which has the characteristics of a muted color which is dark in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_MUTED">DARK_MUTED</a>
-     */
-    DarkMuted,
-
-    /**
-     * A target which has the characteristics of a vibrant color which is dark in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_VIBRANT">DARK_VIBRANT</a>
-     */
-    DarkVibrant,
-
-    /**
-     * A target which has the characteristics of a color which shows up most frequently.
-     * @see <a href="https://developer.android.com/reference/kotlin/androidx/palette/graphics/Palette#getDominantSwatch()">getDominantSwatch</a>
-     */
-    Dominant,
-
-    /**
-     * A target which has the characteristics of a muted color which is light in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#LIGHT_MUTED">LIGHT_MUTED</a>
-     */
-    LightMuted,
-
-    /**
-     * A target which has the characteristics of a vibrant color which is light in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#LIGHT_VIBRANT">LIGHT_VIBRANT</a>
-     */
-    LightVibrant,
-
-    /**
-     * A target which has the characteristics of a muted color which is neither light or dark.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#MUTED">MUTED</a>
-     */
-    Muted,
-
-    /**
-     * A target which has the characteristics of a vibrant color which is neither light or dark.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#VIBRANT">VIBRANT</a>
-     */
-    Vibrant
-}
 
 object PaletteAction {
     /**

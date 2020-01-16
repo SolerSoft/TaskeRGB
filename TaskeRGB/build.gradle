@@ -25,6 +25,7 @@ allprojects {
 
     ext {
         blegattcoroutines_version = '0.4.1'
+        binding_version = '3.1.4'
     }
 }
 
