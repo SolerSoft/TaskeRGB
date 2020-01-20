@@ -1,9 +1,7 @@
-package com.solersoft.taskergb.util
+package com.solersoft.taskergb.binding
 
-import android.util.Log
 import com.solersoft.taskergb.BR
 import androidx.databinding.BaseObservable
-import java.lang.Exception
 import kotlin.reflect.KProperty
 
 class DelegatedBindable<T>(private var value: T,

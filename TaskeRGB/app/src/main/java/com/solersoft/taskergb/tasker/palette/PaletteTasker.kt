@@ -2,11 +2,8 @@ package com.solersoft.taskergb.tasker.palette
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import androidx.palette.graphics.Palette
-import com.azeesoft.lib.colorpicker.ColorPickerDialog
 import com.joaomgcd.taskerpluginlibrary.action.TaskerPluginRunnerAction
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfig
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfigHelper
@@ -17,11 +14,8 @@ import com.solersoft.taskergb.R
 import com.solersoft.taskergb.databinding.ActivityConfigPaletteBinding
 import com.solersoft.taskergb.selectOne
 import com.solersoft.taskergb.tasker.ActivityConfigTasker
-import com.solersoft.taskergb.tasker.rgb.RGBWInput
 import com.solersoft.taskergb.toToast
-import kotlinx.android.synthetic.main.activity_config_gettime.*
 import kotlinx.android.synthetic.main.activity_config_palette.*
-import kotlinx.android.synthetic.main.activity_config_rgb.*
 import kotlinx.android.synthetic.main.activity_config_rgb.colorPickButton
 import java.lang.Exception
 
@@ -91,7 +85,7 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
         vm = PaletteViewModel()
 
         // Set error handler
-        vm.setErrorHandler { e-> onError(e) }
+        vm.setErrorHandler(::onError)
 
         // Bind to the ViewModel
         binding.vm = vm
@@ -130,6 +124,6 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
         // TODO: How do we handle this in the ViewModel?
         val relevantVariables = taskerHelper.relevantVariables.toList()
         if (relevantVariables.isEmpty()) return "No variables to select.\n\nCreate some local variables in Tasker to show here.".toToast(this)
-        selectOne("Select a Tasker variable", relevantVariables) { editFilePath.setText(it) }
+        selectOne("Select a Tasker variable", relevantVariables) { filePathEdit.setText(it) }
     }
 }

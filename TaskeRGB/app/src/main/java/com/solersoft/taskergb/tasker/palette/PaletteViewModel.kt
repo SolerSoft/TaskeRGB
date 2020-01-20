@@ -1,31 +1,25 @@
 package com.solersoft.taskergb.tasker.palette
 
-import android.app.AlertDialog
 import android.graphics.Bitmap
-import android.graphics.Color
-import androidx.annotation.ColorInt
-import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import androidx.databinding.Observable
-import androidx.databinding.ObservableField
 import com.solersoft.taskergb.BR
-import com.solersoft.taskergb.ViewModel
-import com.solersoft.taskergb.util.bindDelegate
-import kotlinx.android.synthetic.main.activity_config_palette.*
+import com.solersoft.taskergb.R
+import com.solersoft.taskergb.binding.ViewModel
+import com.solersoft.taskergb.binding.bindDelegate
+import kotlinx.android.synthetic.main.activity_config_palette.view.*
+import me.tatarka.bindingcollectionadapter2.ItemBinding
 import java.lang.Exception
-import kotlin.properties.Delegates
 
 /**
  * A ViewModel for the Palette Configuration Activity.
  */
 class PaletteViewModel : ViewModel() {
 
+    val allColorsBinding = ItemBinding.of<Int>(BR.color, R.layout.fragment_palettesimple)
+
     // region Input Fields
     @get:Bindable
     var input : PaletteInput by bindDelegate(PaletteInput())
-
-    @get:Bindable
-    var loadedImage: Bitmap? by bindDelegate(null)
     // endregion
 
     // region Output Fields

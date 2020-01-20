@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="android.view.View" />
         <variable
             name="vm"
             type="com.solersoft.taskergb.tasker.palette.PaletteViewModel" />
     </data>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -39,7 +40,7 @@
                 tools:srcCompat="@android:drawable/ic_menu_info_details" />
 
             <EditText
-                android:id="@+id/editFilePath"
+                android:id="@+id/filePathEdit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -62,7 +63,7 @@
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/picker_button_description"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/editFilePath"
+                app:layout_constraintTop_toTopOf="@+id/filePathEdit"
                 tools:srcCompat="@drawable/ic_color_picker_24" />
 
             <Button
@@ -70,32 +71,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:onClick="@{() -> vm.runTest()}"
                 android:text="@string/test"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editFilePath" />
+                app:layout_constraintTop_toBottomOf="@+id/filePathEdit" />
 
-            <ImageView
-                android:id="@+id/imageViewer"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:layout_gravity="center"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/resultLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:contentDescription="@string/loaded_image_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/testButton" />
+                app:layout_constraintTop_toBottomOf="@+id/testButton">
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Button"
-                android:onClick="@{() -> vm.runTest()}"
-                tools:layout_editor_absoluteX="411dp"
-                tools:layout_editor_absoluteY="489dp" />
+                <ImageView
+                    android:id="@+id/loadedImageView"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/loaded_image_description"
+                    android:image="@{vm.result.loadedImage}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/allColorsView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:items="@{vm.result.allColors}"
+                    app:itemBinding="@{vm.allColorsBinding}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/loadedImageView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

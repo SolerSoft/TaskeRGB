@@ -6,6 +6,7 @@ import androidx.annotation.ColorInt
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputObject
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.R
+import com.solersoft.taskergb.binding.bindDelegate
 
 /****************************************
  * Enums
@@ -65,6 +66,7 @@ enum class ColorTargetType {
 
 /**
  * Result class for a single execution of {@link PaletteAction}.
+ * @param loadedImage The bitmap image that the palette results will be calculated from.
  */
 class PaletteResult (val loadedImage: Bitmap) {
 

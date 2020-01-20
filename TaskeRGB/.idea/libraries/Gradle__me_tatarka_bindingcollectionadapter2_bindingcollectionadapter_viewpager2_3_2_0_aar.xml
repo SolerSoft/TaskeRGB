@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-viewpager2:3.2.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/da65d22e16172e67bd31c0de192aa591/jetified-bindingcollectionadapter-viewpager2-3.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/da65d22e16172e67bd31c0de192aa591/jetified-bindingcollectionadapter-viewpager2-3.2.0/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.tatarka.bindingcollectionadapter2/bindingcollectionadapter-viewpager2/3.2.0/e68755af68b2112036afe620a27b62167be32f6d/bindingcollectionadapter-viewpager2-3.2.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.tatarka.bindingcollectionadapter2/bindingcollectionadapter-viewpager2/3.2.0/41a94d1fbe7e6fc567cbbaea759b68d88fa36cc6/bindingcollectionadapter-viewpager2-3.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
