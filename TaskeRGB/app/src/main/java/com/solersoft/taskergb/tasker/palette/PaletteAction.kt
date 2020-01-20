@@ -1,15 +1,21 @@
 package com.solersoft.taskergb.tasker.palette
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import androidx.annotation.ColorInt
 import androidx.palette.graphics.Palette
 import androidx.palette.graphics.Target
-import com.solersoft.taskergb.BR
+import coil.Coil
+import coil.DefaultRequestOptions
+import coil.api.get
+import coil.api.load
+import coil.request.GetRequest
+import coil.request.GetRequestBuilder
+import coil.request.LoadRequest
+import coil.request.LoadRequestBuilder
 import com.solersoft.taskergb.addUnique
-import com.solersoft.taskergb.toTaskerColor
-import java.io.File
+import kotlinx.coroutines.*
 
 object PaletteAction {
     /**
@@ -27,10 +33,12 @@ object PaletteAction {
         val all = arrayOf(dominant)
     }
 
+    /*
     /**
      * Loads the image at the specified path
      */
-    private fun loadImage(path: String): Bitmap {
+    private fun loadImage(context: Context, path: String): Bitmap {
+        /*
         // TODO: Support URLs
 
         // Remove file prefix if it's there
@@ -44,7 +52,10 @@ object PaletteAction {
         // Attempt to load and make sure we got a value
         return BitmapFactory.decodeFile(ap)
                 ?: throw IllegalArgumentException("File not found: $ap")
+         */
     }
+
+     */
 
     /**
      * Gets the specified {@link ColorTargetType} from the {@link Palette} or returns {@link defaultColor}.
@@ -67,7 +78,7 @@ object PaletteAction {
     /**
      * Runs the Palette action.
      */
-    fun run(input: PaletteInput): PaletteResult {
+   suspend fun run(context: Context, input: PaletteInput): PaletteResult {
 
         // Validate input
         input.validate()
@@ -81,10 +92,20 @@ object PaletteAction {
         // Get the image path
         val imagePath = input.imagePath!!
 
-        // Load the image
-        val bmp = loadImage(imagePath)
+        // Time to load the image using Coil, but we can't allow hardware bitmaps
+        // because the palette builder needs access to the pixels.
+        // Create the loader without hardware access
+        val loader = coil.ImageLoader(context) {
+            allowHardware(false)
+        }
 
-        // Create the palette builder
+        // Have the loader get the image in its own coroutine thread
+        val image = loader.get(imagePath)
+
+        // Get the bitmap from the drawable
+        val bmp = (image as BitmapDrawable).bitmap
+
+        // Create the palette builder from the bitmap
         val builder = Palette.from(bmp)
 
         // Set configurable color count (default is 16)
@@ -93,14 +114,20 @@ object PaletteAction {
         // Add custom targets to builder
         CustomTargets.all.forEach { builder.addTarget(it) }
 
-        // Build the palette
-        val palette = builder.generate()
+        // Build the palette in its own coroutine thread
+        val palette = withContext(Dispatchers.Default) {
+            builder.generate()
+        }
+
+        // Build the palette variants with a threshold of 70% match to target.
+        val variant = PaletteVariant.generate(palette, 0.70F)
 
         // Create the output object
         val output = PaletteResult(bmp)
 
         // Copy all palette RGB results to the 'all' collection
-        output.allColors.addAll(palette.swatches.map { s -> s.rgb })
+        // output.allColors.addAll(palette.swatches.map { s -> s.rgb })
+        output.allColors.addAll(variant.getSwatches(Target.VIBRANT).map { s -> s.rgb })
 
         // Map named targets to named output variables
         ColorTargetType.values().forEach {

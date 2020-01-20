@@ -17,6 +17,9 @@ import com.solersoft.taskergb.tasker.ActivityConfigTasker
 import com.solersoft.taskergb.toToast
 import kotlinx.android.synthetic.main.activity_config_palette.*
 import kotlinx.android.synthetic.main.activity_config_rgb.colorPickButton
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 
 
@@ -33,12 +36,15 @@ class PaletteRunner : TaskerPluginRunnerAction<PaletteInput, PaletteOutput>() {
      */
     override fun run(context: Context, input: TaskerInput<PaletteInput>): TaskerPluginResult<PaletteOutput> {
 
-        // Run the action and get a result
-        val result = PaletteAction.run(input.regular)
+        // PaletteAction is a suspend function but Tasker doesn't support that so we'll have to run blocking
+        val result = runBlocking {
+
+            // Run the action and get a result
+            PaletteAction.run(context, input.regular)
+        }
 
         // Return success with converted value
         return TaskerPluginResultSucess(result.toTasker())
-
     }
 }
 
@@ -82,7 +88,7 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
         binding = DataBindingUtil.setContentView(this, layoutResId)
 
         // Create the ViewModel
-        vm = PaletteViewModel()
+        vm = PaletteViewModel(this)
 
         // Set error handler
         vm.setErrorHandler(::onError)

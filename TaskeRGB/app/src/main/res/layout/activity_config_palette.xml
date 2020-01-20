@@ -49,7 +49,7 @@
                 android:hint="@string/file_path_hint"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
-                android:text="@{vm.input.imagePath}"
+                android:text="@={vm.input.imagePath}"
                 app:layout_constraintEnd_toStartOf="@+id/colorPickButton"
                 app:layout_constraintStart_toStartOf="@+id/colorLabel"
                 app:layout_constraintTop_toBottomOf="@+id/colorHelpButton" />

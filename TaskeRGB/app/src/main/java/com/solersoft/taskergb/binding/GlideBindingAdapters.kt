@@ -5,10 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.request.RequestOptions
+import coil.api.load
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.binding.GlideBindingAdapters.setImage
 
@@ -16,7 +13,7 @@ import com.solersoft.taskergb.binding.GlideBindingAdapters.setImage
  * Data binding adapters that use Glide to load images.
  */
 object GlideBindingAdapters {
-
+/*
     /**
      * Returns a Glide RequestManager with app default options set.
      */
@@ -64,15 +61,15 @@ object GlideBindingAdapters {
             this.setImageResource(android.R.color.transparent);
         }
     }
-
+*/
     /**
      * Binds an ImageView to a Bitmap.
      * @param imageUrl The image Bitmap.
      */
     @BindingAdapter("android:image")
     @JvmStatic
-    fun ImageView.setImage(imageUrl : Bitmap?) {
-        this.glideOrDefault(imageUrl)
+    fun ImageView.setImage(bitmap : Bitmap?) {
+        this.load(bitmap)
     }
 
     /**
@@ -81,8 +78,10 @@ object GlideBindingAdapters {
      */
     @BindingAdapter("android:image")
     @JvmStatic
-    fun ImageView.setImage(imageUrl : Int?) {
-        this.glideOrDefault(imageUrl)
+    fun ImageView.setImage(drawableRes : Int?) {
+        if (drawableRes != null) {
+            this.load(drawableRes)
+        }
     }
 
     /**
@@ -91,7 +90,7 @@ object GlideBindingAdapters {
      */
     @BindingAdapter("android:image")
     @JvmStatic
-    fun ImageView.setImage(imageUrl : String?) {
-        this.glideOrDefault(imageUrl)
+    fun ImageView.setImage(url : String?) {
+        this.load(url)
     }
 }

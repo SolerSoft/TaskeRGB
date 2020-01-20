@@ -19,7 +19,7 @@ import com.solersoft.taskergb.*
 @TaskerInputRoot
 class PaletteInput @JvmOverloads constructor(
         @field:TaskerInputField(VAR_IMAGE_PATH, R.string.imagePathLabel, R.string.imagePathDescription) var imagePath: String? = null,
-        @field:TaskerInputField(VAR_COLOR_COUNT, R.string.defaultColorLabel, R.string.defaultColorDescription, ignoreInStringBlurb = true) var colorCount: Int = 32,
+        @field:TaskerInputField(VAR_COLOR_COUNT, R.string.defaultColorLabel, R.string.defaultColorDescription, ignoreInStringBlurb = true) var colorCount: Int = 256,
         @field:TaskerInputField(VAR_DEFAULT_COLOR, R.string.defaultColorLabel, R.string.defaultColorDescription) var defaultColor: String = Color.BLACK.toTaskerColor()
 ) {
 
