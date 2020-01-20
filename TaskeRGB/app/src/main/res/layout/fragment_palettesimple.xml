@@ -13,12 +13,17 @@
         android:id="@+id/rootLayout"
         android:layout_width="64dp"
         android:layout_height="64dp">
-
+        <!--
         <Button
             android:id="@+id/swatchButton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@{color}" />
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            />
+            -->
+        <View
+            android:id="@+id/colorRect"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@{color}" />
     </FrameLayout>
 </layout>

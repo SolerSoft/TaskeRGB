@@ -104,7 +104,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    app:columnWidth="48dp"
+                    app:columnWidth="64dp"
                     app:layoutManager="com.solersoft.taskergb.ui.GridAutofitLayoutManager"
                     app:items="@{vm.result.allColors}"
                     app:itemBinding="@{vm.allColorsBinding}"
