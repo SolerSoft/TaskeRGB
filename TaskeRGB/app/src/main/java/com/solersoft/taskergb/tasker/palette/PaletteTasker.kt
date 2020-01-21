@@ -44,7 +44,7 @@ class PaletteRunner : TaskerPluginRunnerAction<PaletteInput, PaletteOutput>() {
         }
 
         // Return success with converted value
-        return TaskerPluginResultSucess(result.toTasker())
+        return TaskerPluginResultSucess(result.toTasker(input.regular.defaultColor))
     }
 }
 

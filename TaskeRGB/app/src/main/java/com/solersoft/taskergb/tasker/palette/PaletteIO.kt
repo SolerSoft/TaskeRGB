@@ -138,15 +138,15 @@ class PaletteOutput @JvmOverloads constructor(
 /**
  * Converts a {@link PaletteResult} to a {@link PaletteOutput}
  */
-inline fun PaletteResult.toTasker() : PaletteOutput {
+inline fun PaletteResult.toTasker(defaultColor: String) : PaletteOutput {
     return PaletteOutput(
-            darkMuted =  this.darkMuted.toTaskerColor(),
-            darkVibrant = this.darkVibrant.toTaskerColor(),
-            dominant = this.dominant.toTaskerColor(),
-            lightMuted = this.lightMuted.toTaskerColor(),
-            lightVibrant = this.lightVibrant.toTaskerColor(),
-            muted = this.muted.toTaskerColor(),
-            vibrant = this.vibrant.toTaskerColor(),
-            allColors = this.allColors.map { c -> c.toTaskerColor() }.toTypedArray()
+            darkMuted = this.results[ColorTargetType.DarkMuted].toTaskerColor(defaultColor),
+            darkVibrant = this.results[ColorTargetType.DarkVibrant].toTaskerColor(defaultColor),
+            dominant = this.results[ColorTargetType.Dominant].toTaskerColor(defaultColor),
+            lightMuted = this.results[ColorTargetType.LightMuted].toTaskerColor(defaultColor),
+            lightVibrant = this.results[ColorTargetType.LightVibrant].toTaskerColor(defaultColor),
+            muted = this.results[ColorTargetType.Muted].toTaskerColor(defaultColor),
+            vibrant = this.results[ColorTargetType.Vibrant].toTaskerColor(defaultColor),
+            allColors = this.results[ColorTargetType.Vibrant]!!.variants.map { s -> s.rgb.toTaskerColor() }.toTypedArray()
     )
 }

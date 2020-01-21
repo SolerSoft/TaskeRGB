@@ -12,6 +12,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.annotation.ColorInt
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
+import com.solersoft.taskergb.tasker.palette.TargetResult
 import kotlin.reflect.KClass
 
 /**
@@ -40,6 +41,14 @@ fun String.withPrefix() : String {
  */
 fun Int.toTaskerColor() : String {
     return "#".plus(Integer.toHexString(this))
+}
+
+/**
+ * Converts a nullable {@link TargetResult} to a tasker color.
+ * @param defaultColor The default color to use if the target result is null.
+ */
+fun TargetResult?.toTaskerColor(defaultColor: String) : String {
+    return this?.primary?.rgb?.toTaskerColor() ?: defaultColor
 }
 
 fun String.toToast(context: Context) {

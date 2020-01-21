@@ -11,13 +11,14 @@ import kotlinx.android.synthetic.main.activity_config_palette.view.*
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import java.lang.Exception
 import kotlinx.coroutines.*
+import androidx.palette.graphics.Palette.Swatch
 
 /**
  * A ViewModel for the Palette Configuration Activity.
  */
 class PaletteViewModel(val context: Context) : ViewModel() {
 
-    val allColorsBinding = ItemBinding.of<Int>(BR.color, R.layout.fragment_palettesimple)
+    val allColorsBinding = ItemBinding.of<Swatch>(BR.swatch, R.layout.fragment_palettesimple)
 
     // region Input Fields
     @get:Bindable

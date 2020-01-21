@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="android.view.View" />
+        <import type="androidx.palette.graphics.Palette.Swatch" />
         <variable
-            name="color"
-            type="int" />
+            name="swatch"
+            type="Swatch" />
     </data>
 
     <FrameLayout
@@ -24,6 +25,6 @@
             android:id="@+id/colorRect"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@{color}" />
+            android:background="@{swatch.rgb}" />
     </FrameLayout>
 </layout>
