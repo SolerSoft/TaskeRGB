@@ -105,6 +105,9 @@
     <string name="vibrantLabel">Vibrant</string>
     <string name="vibrantDescription">A vibrant color which is neither light or dark.</string>
 
+    <string name="brightLabel">Bright</string>
+    <string name="brightDescription">A bright, mostly saturated color.</string>
+
     <string name="allColorsLabel">All Colors</string>
     <string name="allColorsDescription">An array of all colors in the palette.</string>
 

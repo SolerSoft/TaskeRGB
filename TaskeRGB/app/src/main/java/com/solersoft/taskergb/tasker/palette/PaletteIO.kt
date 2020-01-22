@@ -19,7 +19,7 @@ import com.solersoft.taskergb.*
 @TaskerInputRoot
 class PaletteInput @JvmOverloads constructor(
         @field:TaskerInputField(VAR_IMAGE_PATH, R.string.imagePathLabel, R.string.imagePathDescription) var imagePath: String? = null,
-        @field:TaskerInputField(VAR_COLOR_COUNT, R.string.defaultColorLabel, R.string.defaultColorDescription, ignoreInStringBlurb = true) var colorCount: Int = 256,
+        @field:TaskerInputField(VAR_COLOR_COUNT, R.string.defaultColorLabel, R.string.defaultColorDescription, ignoreInStringBlurb = true) var colorCount: Int = 32,
         @field:TaskerInputField(VAR_DEFAULT_COLOR, R.string.defaultColorLabel, R.string.defaultColorDescription) var defaultColor: String = Color.BLACK.toTaskerColor()
 ) {
 
@@ -43,7 +43,7 @@ class PaletteInput @JvmOverloads constructor(
      */
     fun validate() {
         require(!imagePath.isNullOrBlank()) {"$VAR_IMAGE_PATH is not valid."}
-        requireRange(colorCount, min = 1, max = 255) { "$VAR_COLOR_COUNT must be between 1 and 255" }
+        requireRange(colorCount, min = 1, max = 128) { "$VAR_COLOR_COUNT must be between 1 and 128" }
         requireTaskerColor(defaultColor) { "$VAR_DEFAULT_COLOR is not a valid color" }
     }
 }
@@ -138,15 +138,15 @@ class PaletteOutput @JvmOverloads constructor(
 /**
  * Converts a {@link PaletteResult} to a {@link PaletteOutput}
  */
-inline fun PaletteResult.toTasker(defaultColor: String) : PaletteOutput {
+inline fun PaletteEx.toTasker(defaultColor: String) : PaletteOutput {
     return PaletteOutput(
-            darkMuted = this.results[ColorTargetType.DarkMuted].toTaskerColor(defaultColor),
-            darkVibrant = this.results[ColorTargetType.DarkVibrant].toTaskerColor(defaultColor),
-            dominant = this.results[ColorTargetType.Dominant].toTaskerColor(defaultColor),
-            lightMuted = this.results[ColorTargetType.LightMuted].toTaskerColor(defaultColor),
-            lightVibrant = this.results[ColorTargetType.LightVibrant].toTaskerColor(defaultColor),
-            muted = this.results[ColorTargetType.Muted].toTaskerColor(defaultColor),
-            vibrant = this.results[ColorTargetType.Vibrant].toTaskerColor(defaultColor),
-            allColors = this.results[ColorTargetType.Vibrant]!!.variants.map { s -> s.rgb.toTaskerColor() }.toTypedArray()
+            darkMuted = this.targetResults[ColorTargetType.DarkMuted].toTaskerColor(defaultColor),
+            darkVibrant = this.targetResults[ColorTargetType.DarkVibrant].toTaskerColor(defaultColor),
+            dominant = this.targetResults[ColorTargetType.Dominant].toTaskerColor(defaultColor),
+            lightMuted = this.targetResults[ColorTargetType.LightMuted].toTaskerColor(defaultColor),
+            lightVibrant = this.targetResults[ColorTargetType.LightVibrant].toTaskerColor(defaultColor),
+            muted = this.targetResults[ColorTargetType.Muted].toTaskerColor(defaultColor),
+            vibrant = this.targetResults[ColorTargetType.Vibrant].toTaskerColor(defaultColor),
+            allColors = this.swatches.map { s -> s.rgb.toTaskerColor() }.toTypedArray()
     )
 }

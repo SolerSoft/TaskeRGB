@@ -3,16 +3,15 @@ package com.solersoft.taskergb
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.annotation.ColorInt
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
-import com.solersoft.taskergb.tasker.palette.TargetResult
+import androidx.palette.graphics.Palette.Swatch
+import com.solersoft.taskergb.tasker.palette.ColorTargetResult
 import kotlin.reflect.KClass
 
 /**
@@ -47,7 +46,7 @@ fun Int.toTaskerColor() : String {
  * Converts a nullable {@link TargetResult} to a tasker color.
  * @param defaultColor The default color to use if the target result is null.
  */
-fun TargetResult?.toTaskerColor(defaultColor: String) : String {
+fun ColorTargetResult?.toTaskerColor(defaultColor: String) : String {
     return this?.primary?.rgb?.toTaskerColor() ?: defaultColor
 }
 

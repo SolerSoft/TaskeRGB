@@ -5,6 +5,7 @@
     <data>
         <import type="android.view.View" />
         <import type="com.solersoft.taskergb.tasker.palette.ColorTargetType" />
+        <import type="com.solersoft.taskergb.tasker.palette.PaletteBindings" />
         <variable
             name="vm"
             type="com.solersoft.taskergb.tasker.palette.PaletteViewModel" />
@@ -29,16 +30,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/colorHelpButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:contentDescription="@string/info_button_description"
+            <SeekBar
+                android:id="@+id/colorCountEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:hint="@string/file_path_hint"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:max="255"
+                android:progress="@={vm.input.colorCount}"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/colorLabel"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@android:drawable/ic_menu_info_details" />
+                app:layout_constraintTop_toTopOf="@+id/colorLabel" />
+                />
 
             <EditText
                 android:id="@+id/filePathEdit"
@@ -53,7 +59,7 @@
                 android:text="@={vm.input.imagePath}"
                 app:layout_constraintEnd_toStartOf="@+id/colorPickButton"
                 app:layout_constraintStart_toStartOf="@+id/colorLabel"
-                app:layout_constraintTop_toBottomOf="@+id/colorHelpButton" />
+                app:layout_constraintTop_toBottomOf="@+id/colorCountEdit" />
 
             <ImageButton
                 android:id="@+id/colorPickButton"
@@ -93,7 +99,7 @@
                     android:layout_height="300dp"
                     android:layout_gravity="center"
                     android:contentDescription="@string/loaded_image_description"
-                    android:image="@{vm.result.loadedImage}"
+                    android:image="@{vm.palette.bitmap}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -107,8 +113,8 @@
                     android:layout_marginEnd="16dp"
                     app:columnWidth="64dp"
                     app:layoutManager="com.solersoft.taskergb.ui.GridAutofitLayoutManager"
-                    app:items="@{vm.result.results.get(ColorTargetType.Vibrant).variants}"
-                    app:itemBinding="@{vm.allColorsBinding}"
+                    app:items="@{vm.palette.swatches}"
+                    app:itemBinding="@{PaletteBindings.swatch}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/loadedImageView" />
