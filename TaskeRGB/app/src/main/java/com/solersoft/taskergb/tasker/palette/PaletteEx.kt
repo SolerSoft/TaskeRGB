@@ -216,6 +216,11 @@ class PaletteEx(val bitmap: Bitmap, private val palette: Palette, private val va
 
     // region Public Functions
     /**
+     * Gets all of the target results as a list without keys.
+     */
+    val results :List<ColorTargetResult> get() = targetResults.values.toList()
+
+    /**
      * Gets all of the swatches generated for the {@link PaletteEx}.
      */
     val swatches : List<Swatch> get() = palette.swatches

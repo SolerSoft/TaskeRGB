@@ -30,7 +30,7 @@ enum class ColorSpace {
 /**
  * Defines the types of color targets that can be detected in an image.
  */
-enum class ColorTargetType(@IdRes val labelId: Int, @IdRes val descId: Int,  val target: Target, val space: ColorSpace = ColorSpace.HSL) {
+enum class ColorTargetType(@IdRes val labelId: Int, @IdRes val descriptionId: Int, val target: Target, val space: ColorSpace = ColorSpace.HSL) {
     /**
      * A target which has the characteristics of a muted color which is dark in luminance.
      * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_MUTED">DARK_MUTED</a>

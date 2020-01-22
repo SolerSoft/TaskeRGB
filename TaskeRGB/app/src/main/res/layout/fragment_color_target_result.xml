@@ -14,7 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background">
 
         <View
             android:id="@+id/primaryRect"
@@ -22,7 +23,7 @@
             android:layout_height="32dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:background="#000000"
+            android:background="@{colorTargetResult.primary.rgb}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/nameText" />
 
@@ -44,8 +45,7 @@
             android:id="@+id/descriptionText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{colorTargetResult.type.labelId}"
+            android:text="@{colorTargetResult.type.descriptionId}"
             android:textSize="14sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="@+id/nameText"
