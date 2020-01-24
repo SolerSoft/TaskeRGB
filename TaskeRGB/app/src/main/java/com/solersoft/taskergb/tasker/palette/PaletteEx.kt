@@ -187,13 +187,17 @@ class PaletteEx(val bitmap: Bitmap, private val palette: Palette, private val va
                 }
             }
 
-            // Save the max swatch?
+            // If this type is in the original HSL color space, the original AndroidX Palette
+            // swatch should override any version of our calculated max swatch
+            if (type.space == ColorSpace.HSL) { maxSwatch = palette.getSwatchForTarget(type.target) }
+
+            // Should we save the max swatch?
             if (maxSwatch != null) {
 
                 // Get non-null swatch
                 val ms = maxSwatch!!
 
-                // Set it as the primary
+                // Set it as the primary for the type
                 getOrCreateResult(type).primary = ms
 
                 // If it's exclusive, mark it as used

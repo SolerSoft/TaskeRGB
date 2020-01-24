@@ -105,17 +105,3 @@ enum class ColorTargetType(@IdRes val labelId: Int, @IdRes val descriptionId: In
                 .build()
     }
 }
-
-/****************************************
- * Bindings
- ****************************************/
-/**
- * Bindings used for palette objects.
- */
-object PaletteBindings {
-    @JvmStatic
-    val colorTargetResult get() = ItemBinding.of<ColorTargetResult>(BR.colorTargetResult, R.layout.fragment_color_target_result)
-
-    @JvmStatic
-    val swatch get() = ItemBinding.of<Swatch>(BR.swatch, R.layout.fragment_palettesimple)
-}
