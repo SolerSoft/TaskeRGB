@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.solersoft.taskergb.R
 import kotlin.math.ceil
 import kotlin.math.roundToInt
@@ -31,6 +32,7 @@ class GridAutofitLayoutManager : GridLayoutManager {
 
     private val context: Context
     private var columnWidth: Int
+    // private var itemDecoration: ItemDecoration? = null
     private var isDimensionChanged = true
     private var lastWidth = -1
     private var lastHeight = -1
@@ -135,6 +137,38 @@ class GridAutofitLayoutManager : GridLayoutManager {
     override fun isAutoMeasureEnabled(): Boolean {
         return false
     }
+
+    /*
+    override fun onAttachedToWindow(view: RecyclerView?) {
+        // Pass to super first
+        super.onAttachedToWindow(view)
+
+        // Only if we have a view
+        if (view != null) {
+
+            // Create decoration if necessary
+            if (itemDecoration == null) {
+                var dec = MiddleDividerItemDecoration(view.context, MiddleDividerItemDecoration.ALL)
+                dec.setDrawable(view.context.getDrawable(R.drawable.grid_separator))
+                itemDecoration = dec
+            }
+
+            // Add our decoration
+            view.addItemDecoration(itemDecoration!!)
+        }
+    }
+
+    override fun onDetachedFromWindow(view: RecyclerView?, recycler: RecyclerView.Recycler?) {
+
+        // Remove item decorators
+        if (view != null && itemDecoration != null) {
+            view.removeItemDecoration(itemDecoration!!)
+        }
+
+        // Pass to super to finish
+        super.onDetachedFromWindow(view, recycler)
+    }
+     */
 
     override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
 

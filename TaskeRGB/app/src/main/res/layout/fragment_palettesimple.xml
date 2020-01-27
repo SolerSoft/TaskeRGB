@@ -23,8 +23,10 @@
             -->
         <View
             android:id="@+id/colorRect"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@{swatch.rgb}" />
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:background="@{swatch.rgb}"
+            android:translationX="1dp"
+            android:translationY="1dp" />
     </FrameLayout>
 </layout>
