@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="GridAutofitLayoutManager.LayoutParams">
         <attr name="columnWidth" format="dimension"/>
+        <attr name="rowHeight" format="dimension"/>
     </declare-styleable>
 </resources>
