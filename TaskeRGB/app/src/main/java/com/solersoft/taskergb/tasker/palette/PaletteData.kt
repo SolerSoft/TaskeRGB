@@ -29,31 +29,11 @@ enum class ColorSpace {
  ****************************************/
 /**
  * Defines the types of color targets that can be detected in an image.
+ * IMPORTANT: The order of the first 6 entries is important because they must match the
+ * same default order within the AndroidX Palette class. Otherwise the exclusive colors
+ * won't be generated the same between Palette and PaletteEx
  */
 enum class ColorTargetType(@IdRes val labelId: Int, @IdRes val descriptionId: Int, val target: Target, val space: ColorSpace = ColorSpace.HSL) {
-    /**
-     * A target which has the characteristics of a muted color which is dark in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_MUTED">DARK_MUTED</a>
-     */
-    DarkMuted(R.string.darkMutedLabel, R.string.darkMutedDescription, Target.DARK_MUTED),
-
-    /**
-     * A target which has the characteristics of a vibrant color which is dark in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_VIBRANT">DARK_VIBRANT</a>
-     */
-    DarkVibrant(R.string.darkVibrantLabel, R.string.darkVibrantDescription, Target.DARK_VIBRANT),
-
-    /**
-     * A target which has the characteristics of a color which shows up most frequently.
-     * @see <a href="https://developer.android.com/reference/kotlin/androidx/palette/graphics/Palette#getDominantSwatch()">getDominantSwatch</a>
-     */
-    Dominant(R.string.dominantLabel, R.string.dominantDescription, CustomTargets.dominant),
-
-    /**
-     * A target which has the characteristics of a muted color which is light in luminance.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#LIGHT_MUTED">LIGHT_MUTED</a>
-     */
-    LightMuted(R.string.lightMutedLabel, R.string.lightMutedDescription, Target.LIGHT_MUTED),
 
     /**
      * A target which has the characteristics of a vibrant color which is light in luminance.
@@ -62,16 +42,43 @@ enum class ColorTargetType(@IdRes val labelId: Int, @IdRes val descriptionId: In
     LightVibrant(R.string.lightVibrantLabel, R.string.lightVibrantDescription, Target.LIGHT_VIBRANT),
 
     /**
+     * A target which has the characteristics of a vibrant color which is neither light or dark.
+     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#VIBRANT">VIBRANT</a>
+     */
+    Vibrant(R.string.vibrantLabel, R.string.vibrantDescription, Target.VIBRANT),
+
+    /**
+     * A target which has the characteristics of a vibrant color which is dark in luminance.
+     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_VIBRANT">DARK_VIBRANT</a>
+     */
+    DarkVibrant(R.string.darkVibrantLabel, R.string.darkVibrantDescription, Target.DARK_VIBRANT),
+
+    /**
+     * A target which has the characteristics of a muted color which is light in luminance.
+     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#LIGHT_MUTED">LIGHT_MUTED</a>
+     */
+    LightMuted(R.string.lightMutedLabel, R.string.lightMutedDescription, Target.LIGHT_MUTED),
+
+    /**
      * A target which has the characteristics of a muted color which is neither light or dark.
      * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#MUTED">MUTED</a>
      */
     Muted(R.string.mutedLabel, R.string.mutedDescription, Target.MUTED),
 
     /**
-     * A target which has the characteristics of a vibrant color which is neither light or dark.
-     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#VIBRANT">VIBRANT</a>
+     * A target which has the characteristics of a muted color which is dark in luminance.
+     * @see <a href="https://developer.android.com/reference/androidx/palette/graphics/Target.html#DARK_MUTED">DARK_MUTED</a>
      */
-    Vibrant(R.string.vibrantLabel, R.string.vibrantDescription, Target.VIBRANT),
+    DarkMuted(R.string.darkMutedLabel, R.string.darkMutedDescription, Target.DARK_MUTED),
+
+
+
+
+    /**
+     * A target which has the characteristics of a color which shows up most frequently.
+     * @see <a href="https://developer.android.com/reference/kotlin/androidx/palette/graphics/Palette#getDominantSwatch()">getDominantSwatch</a>
+     */
+    Dominant(R.string.dominantLabel, R.string.dominantDescription, CustomTargets.dominant),
 
     /**
      * A bright, mostly saturated color.

@@ -175,21 +175,34 @@ class PaletteEx(val bitmap: Bitmap, private val palette: Palette, private val va
 
                     // If score meets variant threshold, save it.
                     if (score >= variantThreshold) {
-                        getOrCreateResult(type).variants.add(swatch)
+                        var variants = getOrCreateResult(type).variants
+                        if (score > maxScore) {
+                            // Higher scoring, front of the list
+                            variants.add(0, swatch)
+                        } else {
+                            // Lower scoring, end of the list
+                            variants.add(swatch)
+                        }
                     }
 
                     // If score beats max score and this swatch isn't already used, update max swatch
                     if ((score > maxScore) && (!type.target.isExclusive || !usedColors.contains(swatch.rgb)))
                     {
-                        // Update max swatch
+                        // Update max swatch and score
                         maxSwatch = swatch
+                        maxScore = score
                     }
                 }
             }
 
             // If this type is in the original HSL color space, the original AndroidX Palette
             // swatch should override any version of our calculated max swatch
-            if (type.space == ColorSpace.HSL) { maxSwatch = palette.getSwatchForTarget(type.target) }
+            if (type.space == ColorSpace.HSL) {
+                // AndroidX Palette treats Dominant different from any other target.
+                // Specifically, reading dominantSwatch is the only way to get the dominant
+                // color regardless of whether it was previously used by another target.
+                maxSwatch = if (type == ColorTargetType.Dominant) { palette.dominantSwatch } else { palette.getSwatchForTarget(type.target) }
+            }
 
             // Should we save the max swatch?
             if (maxSwatch != null) {
