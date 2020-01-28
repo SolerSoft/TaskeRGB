@@ -68,8 +68,8 @@
     <string name="imagePathLabel">Image Path</string>
     <string name="imagePathDescription">Path of the image to load. Can be local file or Url.</string>
 
-    <string name="colorCountLabel">Color Count</string>
-    <string name="colorCountDescription">Number of colors to generate in the palette. Higher numbers take longer but increase the chances of finding target colors.</string>
+    <string name="maxColorsLabel">Max Colors</string>
+    <string name="maxColorsDescription">Maximum number of colors to generate in the palette. Higher numbers take longer but increase the chances of finding target colors and variants.</string>
 
     <string name="defaultColorLabel">Default Color</string>
     <string name="defaultColorDescription">Default to use when a color is missing from a palette.</string>

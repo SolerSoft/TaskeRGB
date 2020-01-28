@@ -43,9 +43,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@android:drawable/ic_menu_info_details" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/colorPickButton"
-        style="@style/Widget.AppCompat.ImageButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginTop="8dp"
@@ -53,6 +52,6 @@
         android:contentDescription="@string/picker_button_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editColor"
-        tools:srcCompat="@drawable/ic_color_picker_24" />
+        android:background="@drawable/ic_color_picker_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

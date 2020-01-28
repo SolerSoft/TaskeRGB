@@ -21,35 +21,28 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/colorLabel"
+                android:id="@+id/maxColorsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/color_label"
+                android:layout_marginTop="8dp"
+                android:text="@string/maxColorsLabel"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/maxColorsHelpButton" />
 
-            <SeekBar
-                android:id="@+id/colorCountEdit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="@string/file_path_hint"
-                android:importantForAutofill="no"
-                android:inputType="number"
-                android:max="255"
-                android:progress="@={vm.input.colorCount}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/colorLabel"
-                app:layout_constraintTop_toTopOf="@+id/colorLabel" />
+            <ImageButton
+                android:id="@+id/maxColorsHelpButton"
+                style="@style/moreInfoButton"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/picker_button_description"
+                app:layout_constraintStart_toEndOf="@+id/maxColorsLabel"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/filePathEdit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="@string/file_path_hint"
@@ -57,20 +50,17 @@
                 android:inputType="textPersonName"
                 android:text="@={vm.input.imagePath}"
                 app:layout_constraintEnd_toStartOf="@+id/colorPickButton"
-                app:layout_constraintStart_toStartOf="@+id/colorLabel"
-                app:layout_constraintTop_toBottomOf="@+id/colorCountEdit" />
+                app:layout_constraintStart_toStartOf="@+id/maxColorsLabel"
+                app:layout_constraintTop_toBottomOf="@+id/maxColorsHelpButton" />
 
             <ImageButton
                 android:id="@+id/colorPickButton"
-                style="@style/Widget.AppCompat.ImageButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="8dp"
+                style="@style/pickButton"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/picker_button_description"
+                android:src="@drawable/ic_color_picker_24"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/filePathEdit"
-                tools:srcCompat="@drawable/ic_color_picker_24" />
+                app:layout_constraintTop_toTopOf="@+id/filePathEdit" />
 
             <Button
                 android:id="@+id/testButton"
@@ -113,6 +103,19 @@
                         android:layout_margin="8dp"
                         android:contentDescription="@string/loaded_image_description"
                         android:image="@{vm.palette.bitmap}" />
+
+                    <SeekBar
+                        android:id="@+id/colorCountEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="144dp"
+                        android:layout_marginEnd="16dp"
+                        android:ems="10"
+                        android:hint="@string/file_path_hint"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:max="255"
+                        android:progress="@={vm.input.colorCount}" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.recyclerview.widget.RecyclerView
