@@ -25,10 +25,12 @@ class PaletteViewModel(val context: Context) : ViewModel() {
 
     // region Output Fields
     @get:Bindable
-    var erroMessage: String? by bindDelegate(null)
-
-    @get:Bindable
     var palette: PaletteEx? by bindDelegate(null)
+    // endregion
+
+    // region State Fields
+    @get:Bindable
+    var showingResults: Boolean by bindDelegate(false)
     // endregion
 
     // region Public Methods
@@ -40,12 +42,17 @@ class PaletteViewModel(val context: Context) : ViewModel() {
         // Note: PaletteAction does dispatch to other threads
         GlobalScope.launch(Dispatchers.Main) {
             try{
-                // Process dynamic variables
-                // TODO: Actually use file
-                // input.imagePath = "file:///storage/emulated/0/Android/data/com.joaomgcd.autonotification/files/com.spotify.music_-102440555"
+                // Stop showing results if currently showing
+                showingResults = false
+
+                // We're busy now
+                busy = true
 
                 // Run the task and set the output
                 palette = PaletteAction.run(context, input)
+
+                // Show results
+                showingResults = true
             }
             catch (e: Exception) {
                 // Some problem. Clear previous results, if any.
@@ -53,6 +60,10 @@ class PaletteViewModel(val context: Context) : ViewModel() {
 
                 // Pass on to handler
                 handleError(e)
+            }
+            finally {
+                // No longer busy
+                busy = false
             }
         }
     }

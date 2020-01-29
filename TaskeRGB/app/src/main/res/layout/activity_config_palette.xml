@@ -10,176 +10,220 @@
             name="vm"
             type="com.solersoft.taskergb.tasker.palette.PaletteViewModel" />
     </data>
-    <androidx.core.widget.NestedScrollView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/maxColorsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/maxColorsLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/maxColorsHelpButton" />
+
+        <ImageButton
+            android:id="@+id/maxColorsHelpButton"
+            style="@style/moreInfoButton"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/picker_button_description"
+            app:layout_constraintStart_toEndOf="@+id/maxColorsLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SeekBar
+            android:id="@+id/colorCountEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="@string/file_path_hint"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:max="255"
+            android:progress="@={vm.input.colorCount}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/maxColorsHelpButton" />
+
+        <EditText
+            android:id="@+id/filePathEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="@string/file_path_hint"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:text="@={vm.input.imagePath}"
+            app:layout_constraintEnd_toStartOf="@+id/colorPickButton"
+            app:layout_constraintStart_toStartOf="@+id/maxColorsLabel"
+            app:layout_constraintTop_toBottomOf="@+id/colorCountEdit" />
+
+        <ImageButton
+            android:id="@+id/colorPickButton"
+            style="@style/pickButton"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/picker_button_description"
+            android:src="@drawable/ic_color_picker_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/filePathEdit" />
+
+        <Button
+            android:id="@+id/testButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:enabled="@{!vm.busy}"
+            android:onClick="@{() -> vm.runTest()}"
+            android:text="@string/test"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filePathEdit" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/rootLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:id="@+id/resultPopup"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/background_light"
+            android:elevation="5dp"
+            android:visibility="@{vm.showingResults ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/maxColorsLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/maxColorsLabel"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/maxColorsHelpButton" />
-
-            <ImageButton
-                android:id="@+id/maxColorsHelpButton"
-                style="@style/moreInfoButton"
-                android:layout_marginTop="8dp"
-                android:contentDescription="@string/picker_button_description"
-                app:layout_constraintStart_toEndOf="@+id/maxColorsLabel"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/filePathEdit"
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/testScroller"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/file_path_hint"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:text="@={vm.input.imagePath}"
-                app:layout_constraintEnd_toStartOf="@+id/colorPickButton"
-                app:layout_constraintStart_toStartOf="@+id/maxColorsLabel"
-                app:layout_constraintTop_toBottomOf="@+id/maxColorsHelpButton" />
-
-            <ImageButton
-                android:id="@+id/colorPickButton"
-                style="@style/pickButton"
-                android:layout_marginEnd="16dp"
-                android:contentDescription="@string/picker_button_description"
-                android:src="@drawable/ic_color_picker_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/filePathEdit" />
-
-            <Button
-                android:id="@+id/testButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:onClick="@{() -> vm.runTest()}"
-                android:text="@string/test"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/filePathEdit" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/resultLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="@{vm.palette != null ? View.VISIBLE : View.GONE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/testButton">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/loadedImageCard"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:paddingBottom="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="parent">
 
-                    <ImageView
-                        android:id="@+id/loadedImageView"
-                        android:layout_width="300dp"
-                        android:layout_height="300dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp"
-                        android:contentDescription="@string/loaded_image_description"
-                        android:image="@{vm.palette.bitmap}" />
-
-                    <SeekBar
-                        android:id="@+id/colorCountEdit"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="144dp"
-                        android:layout_marginEnd="16dp"
-                        android:ems="10"
-                        android:hint="@string/file_path_hint"
-                        android:importantForAutofill="no"
-                        android:inputType="number"
-                        android:max="255"
-                        android:progress="@={vm.input.colorCount}" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/resultsView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:nestedScrollingEnabled="false"
-                    app:columnWidth="64dp"
-                    app:itemBinding="@{PaletteBindings.colorTargetResult}"
-                    app:items="@{vm.palette.results}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/loadedImageCard" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:paddingBottom="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/resultsView">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/loadedImageCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp">
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:paddingBottom="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/allColorsText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/allColorsLabel"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                        <ImageView
+                            android:id="@+id/loadedImageView"
+                            android:layout_width="300dp"
+                            android:layout_height="300dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="8dp"
+                            android:contentDescription="@string/loaded_image_description"
+                            android:image="@{vm.palette.bitmap}" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/allColorsView"
-                            android:layout_width="0dp"
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/resultsView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:nestedScrollingEnabled="false"
+                        app:columnWidth="64dp"
+                        app:itemBinding="@{PaletteBindings.colorTargetResult}"
+                        app:items="@{vm.palette.results}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/loadedImageCard" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:paddingBottom="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/resultsView">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:nestedScrollingEnabled="true"
-                            android:paddingBottom="16dp"
-                            app:columnWidth="64dp"
-                            app:rowHeight="64dp"
-                            app:itemBinding="@{PaletteBindings.swatch}"
-                            app:items="@{vm.palette.swatches}"
-                            app:layoutManager="com.solersoft.taskergb.ui.GridAutofitLayoutManager"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/allColorsText" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                            android:layout_margin="8dp">
+
+                            <TextView
+                                android:id="@+id/allColorsText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/allColorsLabel"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/allColorsView"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:nestedScrollingEnabled="true"
+                                android:paddingBottom="16dp"
+                                app:columnWidth="64dp"
+                                app:itemBinding="@{PaletteBindings.swatch}"
+                                app:items="@{vm.palette.swatches}"
+                                app:layoutManager="com.solersoft.taskergb.ui.GridAutofitLayoutManager"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/allColorsText"
+                                app:rowHeight="64dp" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <ImageButton
+                android:id="@+id/closeResultsButton"
+                style="@style/moreInfoButton"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/picker_button_description"
+                android:onClick="@{ () -> vm.setShowingResults(false) }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/busyIndicator"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:elevation="10dp"
+            android:indeterminateOnly="true"
+            android:visibility="@{vm.busy ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

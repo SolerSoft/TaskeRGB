@@ -3,6 +3,7 @@ package com.solersoft.taskergb.tasker.palette
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.databinding.DataBindingUtil
 import com.joaomgcd.taskerpluginlibrary.action.TaskerPluginRunnerAction
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfig
@@ -80,6 +81,21 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
     lateinit var vm : PaletteViewModel
 
     // endregion
+
+    // Handle back button
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.repeatCount == 0) {
+            // Close any popups if open
+            if (vm.showingResults) {
+                vm.showingResults = false;
+                return true
+            }
+        }
+
+        // Not showing popups. Pass to super to handle.
+        return super.onKeyDown(keyCode, event)
+    }
 
     // Handle activity creation
     override fun onCreate(savedInstanceState: Bundle?) {
