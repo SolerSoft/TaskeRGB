@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Users/jbien/Apps/android-studio-4/plugins/android/lib/android.jar!/images/material/icons/materialicons/colorize/baseline_colorize_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Users/jbien/Apps/android-studio-4/plugins/android/lib/android.jar!/images/material/icons/materialiconsoutlined/info/outline_info_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_color_picker_24_black" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_more_info_32" />
                             <entry key="sourceFile" value="C:\Users\jbien\Code\SolerSoft\TaskeRGB\TaskeRGB" />
                           </map>
                         </option>
