@@ -172,6 +172,6 @@
     <string name="info_button_description">Information button to provide additional details.</string>
     <string name="picker_button_description">A picker button which allows a value to be selected.</string>
     <string name="color_picker_title">Select a color</string>
-    <string name="file_path_hint">Variable or explicit file path</string>
+    <string name="file_path_hint">Variable, url or local file path</string>
     <string name="loaded_image_description">The loaded image</string>
 </resources>

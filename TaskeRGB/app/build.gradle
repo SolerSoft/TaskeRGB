@@ -64,6 +64,10 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
     implementation 'com.azeesoft.lib.colorpicker:colorpicker:1.0.8@aar' // Color Picker
+    implementation 'com.github.dhaval2404:imagepicker:1.6' // Image Picker
+    // implementation 'com.github.dhaval2404:imagepicker-support:1.5' // Image Picker non-AndroidX support
+    implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.1' // Image Picker Inline Result
+    implementation 'com.github.yalantis:ucrop:2.2.4' // Image Picker Cropping
     implementation 'androidx.palette:palette-ktx:1.0.0' // Palette
     implementation 'io.coil-kt:coil:0.9.2' // Image Loading
     implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:3.2.0' // Binding Core

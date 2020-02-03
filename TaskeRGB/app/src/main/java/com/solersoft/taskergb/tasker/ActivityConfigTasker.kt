@@ -3,6 +3,7 @@ package com.solersoft.taskergb.tasker
 import android.app.Activity
 import android.os.Bundle
 import android.view.KeyEvent
+import androidx.appcompat.app.AppCompatActivity
 import com.joaomgcd.taskerpluginlibrary.SimpleResultError
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfig
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfigHelper
@@ -13,7 +14,7 @@ import com.solersoft.taskergb.alert
 /**
  * Base class for all the ConfigActivities in this example. This is totally optional. You can use any base class you want as long as it implements TaskerPluginConfig
  */
-abstract class ActivityConfigTasker<TInput : Any, TOutput : Any, TActionRunner : TaskerPluginRunner<TInput, TOutput>, THelper : TaskerPluginConfigHelper<TInput, TOutput, TActionRunner>> : Activity(), TaskerPluginConfig<TInput> {
+abstract class ActivityConfigTasker<TInput : Any, TOutput : Any, TActionRunner : TaskerPluginRunner<TInput, TOutput>, THelper : TaskerPluginConfigHelper<TInput, TOutput, TActionRunner>> : AppCompatActivity(), TaskerPluginConfig<TInput> {
     abstract fun getNewHelper(config: TaskerPluginConfig<TInput>): THelper
     abstract val layoutResId: Int
 

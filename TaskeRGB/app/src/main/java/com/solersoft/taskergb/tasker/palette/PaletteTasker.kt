@@ -1,10 +1,13 @@
 package com.solersoft.taskergb.tasker.palette
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.joaomgcd.taskerpluginlibrary.action.TaskerPluginRunnerAction
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfig
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfigHelper
@@ -21,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_config_rgb.colorPickButton
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import java.lang.Exception
 
 
@@ -113,7 +117,8 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
         binding.vm = vm
 
         // Subscribe to control events
-        colorPickButton.setOnClickListener { showVariableDialog() }
+        imagePickButton.setOnClickListener { pickImage() }
+        imageVarButton.setOnClickListener { showVariableDialog() }
 
         // Pass on to super for the rest of creation
         super.onCreate(savedInstanceState)
@@ -142,10 +147,38 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
         }
     }
 
+    /**
+     * Picks an image from storage or the camera.
+     * This function uses a 3rd party library ImagePicker.
+     * @see <a href="https://github.com/Dhaval2404/ImagePicker">ImagePicker</a> 3rd party library.
+     */
+    private fun pickImage() {
+        ImagePicker.with(this).start { resultCode, data ->
+
+            when (resultCode) {
+
+                // Success (data.data is a Uri)
+                RESULT_OK -> filePathEdit.setText(data!!.data.toString())
+
+                // Error
+                ImagePicker.RESULT_ERROR -> Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+
+                // User canceled
+                else -> Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun showVariableDialog() {
         // TODO: How do we handle this in the ViewModel?
         val relevantVariables = taskerHelper.relevantVariables.toList()
         if (relevantVariables.isEmpty()) return "No variables to select.\n\nCreate some local variables in Tasker to show here.".toToast(this)
-        selectOne("Select a Tasker variable", relevantVariables) { filePathEdit.setText(it) }
+        selectOne("Select a Tasker variable", relevantVariables)
+        {
+            // If it is null, the user cancelled the dialog
+            if (it != null) {
+                filePathEdit.setText(it)
+            }
+        }
     }
 }
