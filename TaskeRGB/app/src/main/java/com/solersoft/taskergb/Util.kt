@@ -5,12 +5,13 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.widget.ArrayAdapter
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.Toast
+import android.text.Html
+import android.util.TypedValue
+import android.widget.*
+import androidx.annotation.StringRes
+import androidx.core.text.HtmlCompat
+import androidx.core.view.setPadding
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
-import androidx.palette.graphics.Palette.Swatch
 import com.solersoft.taskergb.tasker.palette.ColorTargetResult
 import kotlin.reflect.KClass
 
@@ -66,13 +67,77 @@ fun Activity.selectOne(title: String, options: List<String>, callback: (String?)
     }.show()
 }
 
-fun Activity.alert(title: String, message: String) {
+fun Activity.alert(title: String, message: String?) {
     val alertDialog = AlertDialog.Builder(this).create()
     alertDialog.setTitle(title)
     alertDialog.setMessage(message)
     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK") { dialog, _ -> dialog.dismiss() }
     alertDialog.show()
 }
+
+fun Activity.getDp(px: Int) : Int {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px.toFloat(), resources.displayMetrics).toInt()
+}
+
+/**
+ * Shows a help popup with the specified title and markup message.
+ * @param title The title to display for the help dialog.
+ * @param markup The markup text to display in the help dialog.
+ */
+fun Activity.showHelp(title: String, markup: String) {
+
+    // Create the TextView that will display the markup
+    val textView = TextView(this);
+
+    // Give it some nice padding and formatting
+    textView.setPadding(getDp(16))
+    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
+
+    // Parse the markup
+    textView.text = HtmlCompat.fromHtml(markup, 0)
+
+    // Create builder
+    val ab = AlertDialog.Builder(this);
+
+    // Set title
+    ab.setTitle(title)
+
+    // Set view to TextView
+    ab.setView(textView)
+
+    // OK button
+    ab.setPositiveButton(R.string.ok) { dialog, _ ->
+        dialog.dismiss()
+    }
+
+    // No cancel button
+    ab.setCancelable(false)
+
+    // Show it
+    ab.show()
+}
+
+/**
+ * Shows a help popup with the localized title 'Help' and the specified markup message.
+ * @param markup The markup text to display in the help dialog.
+ */
+fun Activity.showHelp(markup: String) {
+
+    // Get "Help" title
+    val title = this.getString(R.string.help)
+
+    // Call other override
+    showHelp(title, markup)
+}
+
+/**
+ * Shows a help popup with the localized title 'Help' and the specified markup resource.
+ * @param markupId The ID of the markup string resource to display in the help dialog.
+ */
+fun Activity.showHelp(@StringRes markupId : Int) {
+    showHelp(this.getString(markupId))
+}
+
 
 val RadioGroup.checkedRadioButton get() = this.findViewById<RadioButton>(checkedRadioButtonId)
 

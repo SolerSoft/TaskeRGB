@@ -3,6 +3,7 @@
     <string name="formatted_time">Formatted Time</string>
     <string name="formatted_time_description">The time this action was created formatted with your chosen format</string>
     <string name="format">Format</string>
+    <string name="help">Help</string>
     <string name="times">Times</string>
     <string name="test">Test</string>
     <string name="variable">Variable</string>
@@ -27,6 +28,14 @@
     <string name="get_seconds">Get Seconds</string>
     <string name="playing_label">Playing State</string>
     <string name="playing_html_label">Whether the player is playing right now or not</string>
+
+
+    <!-- General Help  -->
+    <string name="helpVarsInTest">Tasker variables &lt;b&gt;are&lt;/b&gt; supported when the task
+        &lt;i&gt;runs&lt;/i&gt;, but unfortunately they &lt;b&gt;aren\'t&lt;/b&gt; supported here in
+        &lt;i&gt;test mode&lt;/i&gt;. This is a Tasker limitation. &lt;br&gt;&lt;br&gt; Please make sure
+        all values have been supplied and no variables are in use, then try running the test again.</string>
+
 
     <!-- RGBW Configuration Labels -->
 
@@ -64,6 +73,14 @@
     <string name="valueDescription">The RGBW value that should be set.</string>
 
 
+    <!-- Palette Entries  -->
+    <string name="entryNameLabel">Name</string>
+    <string name="entryNameDescription">The name of the palette entry.</string>
+
+    <string name="entryColorLabel">Color</string>
+    <string name="entryColorDescription">The color of the palette entry.</string>
+
+
     <!-- Palette Inputs  -->
     <string name="imagePathLabel">Image Path</string>
     <string name="imagePathDescription">Path of the image to load. Can be local file or Url.</string>
@@ -73,14 +90,6 @@
 
     <string name="defaultColorLabel">Default Color</string>
     <string name="defaultColorDescription">Default to use when a color is missing from a palette.</string>
-
-
-    <!-- Palette Entries  -->
-    <string name="entryNameLabel">Name</string>
-    <string name="entryNameDescription">The name of the palette entry.</string>
-
-    <string name="entryColorLabel">Color</string>
-    <string name="entryColorDescription">The color of the palette entry.</string>
 
 
     <!-- Palette Targets  -->

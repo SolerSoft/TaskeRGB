@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.joaomgcd.taskerpluginlibrary.action.TaskerPluginRunnerAction
@@ -14,11 +15,9 @@ import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfigHelper
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResult
 import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResultSucess
-import com.solersoft.taskergb.R
+import com.solersoft.taskergb.*
 import com.solersoft.taskergb.databinding.ActivityConfigPaletteBinding
-import com.solersoft.taskergb.selectOne
 import com.solersoft.taskergb.tasker.ActivityConfigTasker
-import com.solersoft.taskergb.toToast
 import kotlinx.android.synthetic.main.activity_config_palette.*
 import kotlinx.android.synthetic.main.activity_config_rgb.colorPickButton
 import kotlinx.coroutines.GlobalScope
@@ -110,8 +109,9 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
         // Create the ViewModel
         vm = PaletteViewModel(this)
 
-        // Set error handler
+        // Set handlers
         vm.setErrorHandler(::onError)
+        vm.setHelpHandler(::onHelp)
 
         // Bind to the ViewModel
         binding.vm = vm
@@ -140,11 +140,11 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
     }
 
     private fun onError(e: Exception) {
-        with(AlertDialog.Builder(this)) {
-            setTitle("Error")
-            setMessage(e.message)
-            create().show()
-        }
+        alert("Error", e.message)
+    }
+
+    private fun onHelp(@StringRes markupId: Int) {
+        showHelp(markupId)
     }
 
     /**

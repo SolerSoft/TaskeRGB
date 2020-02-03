@@ -1,17 +1,12 @@
 package com.solersoft.taskergb.tasker.palette
 
 import android.content.Context
-import android.graphics.Bitmap
 import androidx.databinding.Bindable
-import com.solersoft.taskergb.BR
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.binding.ViewModel
 import com.solersoft.taskergb.binding.bindDelegate
-import kotlinx.android.synthetic.main.activity_config_palette.view.*
-import me.tatarka.bindingcollectionadapter2.ItemBinding
 import java.lang.Exception
 import kotlinx.coroutines.*
-import androidx.palette.graphics.Palette.Swatch
 
 /**
  * A ViewModel for the Palette Configuration Activity.
@@ -38,6 +33,17 @@ class PaletteViewModel(val context: Context) : ViewModel() {
      * Runs a test with the current input values.
      */
     fun runTest() {
+        // Check for variables first
+        var path = input.imagePath?.trim()
+        if (path != null && path.startsWith('%')) {
+
+            // Show help for variables in test
+            showHelp(R.string.helpVarsInTest)
+
+            // Bail
+            return
+        }
+
         // Run the following on main thread since we need to do binding
         // Note: PaletteAction does dispatch to other threads
         GlobalScope.launch(Dispatchers.Main) {
@@ -59,7 +65,7 @@ class PaletteViewModel(val context: Context) : ViewModel() {
                 palette = null
 
                 // Pass on to handler
-                handleError(e)
+                showError(e)
             }
             finally {
                 // No longer busy
