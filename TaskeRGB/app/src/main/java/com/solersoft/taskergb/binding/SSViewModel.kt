@@ -12,7 +12,7 @@ typealias HelpHandler = (markupId : Int) -> Unit
 // endregion
 
 
-open class ViewModel : BaseObservable() {
+open class SSViewModel : ObservableViewModel() {
 
     // region Common ViewModel Fields
     @get:Bindable

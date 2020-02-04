@@ -8,6 +8,8 @@ import android.view.KeyEvent
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.get
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.joaomgcd.taskerpluginlibrary.action.TaskerPluginRunnerAction
 import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfig
@@ -74,6 +76,9 @@ class PaletteHelper(config: TaskerPluginConfig<PaletteInput>) : TaskerPluginConf
 // Activity class to handle UI for Tasker action configuration
 class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, PaletteRunner, PaletteHelper>() {
 
+    // Private flags
+    var newInstance = true
+
     // region Override Base Class Values
     override val layoutResId = R.layout.activity_config_palette // This is our layout resource ID
     override val shouldSetContentView = false // Do not load the content view since we'll be using binding
@@ -103,11 +108,14 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
     // Handle activity creation
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        // Is this a new instance?
+        newInstance = (savedInstanceState == null)
+
         // Create binding
         binding = DataBindingUtil.setContentView(this, layoutResId)
 
-        // Create the ViewModel
-        vm = PaletteViewModel(this)
+        // Create or obtain ViewModel
+        vm = ViewModelProviders.of(this).get(PaletteViewModel::class.java) // PaletteViewModel(this)
 
         // Set handlers
         vm.setErrorHandler(::onError)
@@ -129,8 +137,10 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
 
     // Fill controls from Input data
     override fun assignFromInput(input: TaskerInput<PaletteInput>) = input.regular.run {
-        // Fill VM with incoming data
-        vm.input = input.regular
+        // Fill VM with incoming data but only if new instance
+        if (newInstance) {
+            vm.input = input.regular
+        }
     }
 
     // Convert controls to Input data

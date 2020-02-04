@@ -3,7 +3,8 @@ package com.solersoft.taskergb.tasker.palette
 import android.content.Context
 import androidx.databinding.Bindable
 import com.solersoft.taskergb.R
-import com.solersoft.taskergb.binding.ViewModel
+import com.solersoft.taskergb.binding.ObservableViewModel
+import com.solersoft.taskergb.binding.SSViewModel
 import com.solersoft.taskergb.binding.bindDelegate
 import java.lang.Exception
 import kotlinx.coroutines.*
@@ -11,7 +12,7 @@ import kotlinx.coroutines.*
 /**
  * A ViewModel for the Palette Configuration Activity.
  */
-class PaletteViewModel(val context: Context) : ViewModel() {
+class PaletteViewModel() : SSViewModel() {
 
     // region Input Fields
     @get:Bindable
@@ -31,8 +32,9 @@ class PaletteViewModel(val context: Context) : ViewModel() {
     // region Public Methods
     /**
      * Runs a test with the current input values.
+     * @param context The context used for loading resources.
      */
-    fun runTest() {
+    fun runTest(context: Context) {
         // Check for variables first
         var path = input.imagePath?.trim()
         if (path != null && path.startsWith('%')) {

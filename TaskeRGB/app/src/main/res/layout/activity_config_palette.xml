@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:enabled="@{!vm.busy}"
-            android:onClick="@{() -> vm.runTest()}"
+            android:onClick="@{() -> vm.runTest(context)}"
             android:text="@string/test"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
