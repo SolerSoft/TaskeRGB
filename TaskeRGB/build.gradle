@@ -26,6 +26,7 @@ allprojects {
 
     ext {
         blegattcoroutines_version = '0.4.1'
+        splitties_version = "3.0.0-alpha06"
         binding_version = '3.1.4'
     }
 }

@@ -2,18 +2,13 @@ package com.solersoft.taskergb.tasker.rgb
 
 import android.content.Context
 import android.util.Log
-import com.beepiz.blegattcoroutines.genericaccess.GenericAccess
 import com.joaomgcd.taskerpluginlibrary.action.TaskerPluginRunnerAction
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResult
 import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResultSucess
 import com.solersoft.taskergb.R
-import com.solersoft.taskergb.ble.deviceFor
-import com.solersoft.taskergb.ble.useBasic
 import com.solersoft.taskergb.byIndex
-import com.solersoft.taskergb.devices.DeviceInfo
-import com.solersoft.taskergb.devices.DeviceManager
-import com.solersoft.taskergb.devices.RGBWDeviceBLE
+import com.solersoft.taskergb.devices.*
 import kotlinx.coroutines.runBlocking
 
 
@@ -25,7 +20,9 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
     private val ERR_DEVICE_UNAVAILABLE = -2
 
 
-    // Add our custom plugin icon
+    /**
+     * Add meta properties, like our custom plugin icon
+     */
     override val notificationProperties get() = NotificationProperties(iconResId = R.drawable.plugin)
 
     /*
@@ -42,7 +39,25 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
     }
      */
 
-    // Performs the real work of the action
+    /**
+     * Creates the right runtime device for the specified {@link DeviceInfo}.
+     * @param context The context which may be used to create the device.
+     * @param deviceInfo Information about the device to instantiate.
+     */
+    private fun createDevice(context: Context, deviceInfo: DeviceInfo): RGBDevice {
+        return when (deviceInfo.connectionType){
+            ConnectionType.BLE -> BLEDevice(context, deviceInfo.address)
+            else -> throw UnsupportedOperationException("Connection type ${deviceInfo.connectionType} is not yet supported.")
+        };
+    }
+
+
+    /**
+     * Performs the real work of the action
+     * @param context The context for the action.
+     * @param input The Tasker input data for the action.
+     * @return The Tasker result for the action.
+     */
     override fun run(context: Context, input: TaskerInput<RGBWInput>): TaskerPluginResult<RGBWOutput> {
 
         // Parse inputs
@@ -76,19 +91,20 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
             devices.forEach {
 
                 // Placeholder
-                var device: RGBWDeviceBLE? = null
+                var device: RGBDevice? = null
 
                 // Following may fail
                 try {
                     // Create the device
-                    device = RGBWDeviceBLE(context, it.address)
+                    device = createDevice(context, it)
 
                     // Connect to the device
                     device.connect()
 
                     // Write the value to the device
                     device.writeValue(value)
-                } finally {
+                }
+                finally {
                     // Always make sure the device is closed
                     device?.close()
                 }

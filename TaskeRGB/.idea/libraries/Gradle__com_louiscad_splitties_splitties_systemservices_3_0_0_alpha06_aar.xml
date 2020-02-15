@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.louiscad.splitties:splitties-systemservices:3.0.0-alpha06@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dbf327fd55de2f386757285c16e41caa/jetified-splitties-systemservices-3.0.0-alpha06/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dbf327fd55de2f386757285c16e41caa/jetified-splitties-systemservices-3.0.0-alpha06/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.louiscad.splitties/splitties-systemservices/3.0.0-alpha06/15218e6a5e4dcc4f08144ba201760ba7be7683d2/splitties-systemservices-3.0.0-alpha06-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

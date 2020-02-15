@@ -1,24 +1,29 @@
 package com.solersoft.taskergb
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
-import android.text.Html
 import android.util.TypedValue
 import android.widget.*
 import androidx.annotation.StringRes
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.setPadding
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import com.solersoft.taskergb.tasker.palette.ColorTargetResult
 import kotlin.reflect.KClass
 
+
 /**
  * The prefix used for all tasker variables
  */
 const val VAR_PREFIX = "tr"
+private const val PERMISSION_REQUEST_COARSE_LOCATION = 1
 
 /**
  * Ensures the item is only added to the list once.
@@ -74,6 +79,28 @@ fun Activity.alert(title: String, message: String?) {
     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK") { dialog, _ -> dialog.dismiss() }
     alertDialog.show()
 }
+
+/*
+Instead using https://github.com/LouisCAD/Splitties/tree/master/modules/permissions
+
+fun Activity.checkLocationPermission() : Boolean {
+    when (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+        PackageManager.PERMISSION_GRANTED -> true
+        PackageManager.PERMISSION_DENIED -> {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                // Show an explanation to user *asynchronously* -- don't block this thread waiting
+                // for the user's response! After user sees the explanation, try again to request
+                // the permission
+                Toast.makeText(this, "Location access is required to show Bluetooth devices nearby.", Toast.LENGTH_LONG).show()
+            } else {
+                //No explanation needed, we can request the permission
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSION_REQUEST_COARSE_LOCATION)
+            }
+            false
+        }
+    }
+}
+ */
 
 fun Activity.getDp(px: Int) : Int {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px.toFloat(), resources.displayMetrics).toInt()

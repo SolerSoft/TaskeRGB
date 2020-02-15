@@ -10,13 +10,83 @@ import kotlinx.coroutines.withTimeout
 import java.lang.Exception
 import java.util.*
 
-class RGBWDeviceBLE(val context: Context, val address: String) {
+/**
+ * Abstract base class for a RGB device.
+ */
+open abstract class RGBDevice(
+        /**
+         * The address of the device, if {@link connectionState} is Connected.
+         */
+        val address: String
+) {
 
     // region Constants
 
     private val TAG = this::class.simpleName
-    private val RGBW_SERVICE_UUID = UUID.fromString("0000FFE5-0000-1000-8000-00805F9B34FB")
-    private val RGBW_CHARACTERISTIC = UUID.fromString("0000FFE9-0000-1000-8000-00805F9B34FB")
+
+    // endregion
+
+
+    // region Internal Methods
+
+    /**
+     * Raises an exception if the connection state isn't Connected.
+     */
+    protected fun ensureConnected() {
+        if (connectionState != ConnectionState.Connected) { throw IllegalStateException("Not connected to device.") }
+    }
+
+    // endregion
+
+
+    // region Public Methods
+
+    /**
+     * Attempts to connect to the device at {@link #address}.
+     *
+     * @param timeoutMS Duration in milliseconds before the connection will timeout. Default is 5 seconds.
+     */
+    abstract suspend fun connect(timeoutMS: Long = 5000L);
+
+    /**
+     * Writes the specified color value to the device.
+     *
+     * @param value The color value to write to the device.
+     */
+    abstract suspend fun writeValue(value: RGBWValue);
+
+    /**
+     * Closes any open connection to the underlying device.
+     */
+    abstract fun close();
+
+    // endregion
+
+
+    // region Public Properties
+
+    /**
+     * Gets a value that indicates the state of the underlying connection to the device.
+     */
+    var connectionState: ConnectionState = ConnectionState.Disconnected
+        protected set
+
+    // endregion
+}
+
+/**
+ * A RGB device that is controlled over BLE.
+ */
+class BLEDevice(val context: Context, address: String) : RGBDevice(address) {
+
+    // region Constants
+
+    private val TAG = this::class.simpleName
+
+    companion object {
+        val RGBW_SERVICE_UUID = UUID.fromString("0000FFE5-0000-1000-8000-00805F9B34FB")
+        val RGBW_CHARACTERISTIC = UUID.fromString("0000FFE9-0000-1000-8000-00805F9B34FB")
+    }
 
     // endregion
 
@@ -54,10 +124,6 @@ class RGBWDeviceBLE(val context: Context, val address: String) {
         return payload
     }
 
-    private fun ensureConnected() {
-        if (connectionState != ConnectionState.Connected) { throw IllegalStateException("Not connected to device.") }
-    }
-
     // endregion
 
 
@@ -68,7 +134,7 @@ class RGBWDeviceBLE(val context: Context, val address: String) {
      *
      * @param timeoutMS Duration in milliseconds before the connection will timeout. Default is 5 seconds.
      */
-    suspend fun connect(timeoutMS: Long = 5000L) {
+    override suspend fun connect(timeoutMS: Long) {
 
         // If already connected or connecting, ignore duplicate request
         if (connectionState != ConnectionState.Disconnected) { return }
@@ -116,7 +182,7 @@ class RGBWDeviceBLE(val context: Context, val address: String) {
      *
      * @param value The color value to write to the device.
      */
-    suspend fun writeValue(value: RGBWValue) {
+    override suspend fun writeValue(value: RGBWValue) {
 
         // First, make sure we're connected
         ensureConnected()
@@ -138,7 +204,7 @@ class RGBWDeviceBLE(val context: Context, val address: String) {
     /**
      * Closes any open connection to the underlying device.
      */
-    fun close() {
+    override fun close() {
 
         // If not connected, ignore duplicate request
         if (connectionState == ConnectionState.Disconnected) { return }
@@ -171,12 +237,6 @@ class RGBWDeviceBLE(val context: Context, val address: String) {
      * Gets the underlying bluetooth device, if {@link connectionState} is Connected.
      */
     var device: BluetoothDevice? = null
-        private set
-
-    /**
-     * Gets a value that indicates the state of the underlying bluetooth connection.
-     */
-    var connectionState: ConnectionState = ConnectionState.Disconnected
         private set
 
     // endregion
