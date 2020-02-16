@@ -8,6 +8,7 @@ import com.joaomgcd.taskerpluginlibrary.input.TaskerInputRoot
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputObject
 import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.*
+import com.solersoft.taskergb.tasker.palette.ColorTargetType.CustomTargets.bright
 
 /****************************************
  * Inputs
@@ -70,6 +71,9 @@ class PaletteEntry(
 @TaskerOutputObject()
 class PaletteOutput @JvmOverloads constructor(
         // Named Values
+        @get:TaskerOutputVariable(VAR_BRIGHT, R.string.brightLabel, R.string.brightDescription)
+        var bright: String = DEFAULT_COLOR,
+
         @get:TaskerOutputVariable(VAR_DARK_MUTED, R.string.darkMutedLabel, R.string.darkMutedDescription)
         var darkMuted: String = DEFAULT_COLOR,
 
@@ -96,6 +100,7 @@ class PaletteOutput @JvmOverloads constructor(
         var allColors: Array<String> = arrayOf<String>()
     ) {
     companion object {
+        const val VAR_BRIGHT = VAR_PREFIX + "bright"
         const val VAR_DARK_MUTED = VAR_PREFIX + "darkmuted"
         const val VAR_DARK_VIBRANT = VAR_PREFIX + "darkvibrant"
         const val VAR_DOMINANT = VAR_PREFIX + "dominant"
@@ -122,6 +127,7 @@ class PaletteOutput @JvmOverloads constructor(
     fun validate() {
         ColorTargetType.values().forEach {
             when (it) {
+                ColorTargetType.Bright -> requireTaskerColor(bright) { "$VAR_BRIGHT is not a valid color" }
                 ColorTargetType.DarkMuted -> requireTaskerColor(darkMuted) { "$VAR_DARK_MUTED is not a valid color" }
                 ColorTargetType.DarkVibrant -> requireTaskerColor(darkVibrant) { "$VAR_DARK_VIBRANT is not a valid color" }
                 ColorTargetType.Dominant -> requireTaskerColor(dominant) { "$VAR_DOMINANT is not a valid color" }
@@ -138,7 +144,7 @@ class PaletteOutput @JvmOverloads constructor(
 /**
  * Converts a {@link PaletteResult} to a {@link PaletteOutput}
  */
-inline fun PaletteEx.toTasker(defaultColor: String) : PaletteOutput {
+fun PaletteEx.toTasker(defaultColor: String) : PaletteOutput {
     return PaletteOutput(
             darkMuted = this.targetResults[ColorTargetType.DarkMuted].toTaskerColor(defaultColor),
             darkVibrant = this.targetResults[ColorTargetType.DarkVibrant].toTaskerColor(defaultColor),

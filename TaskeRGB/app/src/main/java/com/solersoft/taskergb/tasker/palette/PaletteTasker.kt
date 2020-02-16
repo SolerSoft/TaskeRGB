@@ -114,6 +114,9 @@ class ActivityConfigPalette : ActivityConfigTasker<PaletteInput, PaletteOutput, 
         // Create binding
         binding = DataBindingUtil.setContentView(this, layoutResId)
 
+        // Set lifecycle owner for LiveData bindings
+        binding.lifecycleOwner = this
+
         // Create or obtain ViewModel
         vm = ViewModelProviders.of(this).get(PaletteViewModel::class.java) // PaletteViewModel(this)
 

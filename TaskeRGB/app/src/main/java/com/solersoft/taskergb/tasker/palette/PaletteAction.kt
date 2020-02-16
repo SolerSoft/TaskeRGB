@@ -19,11 +19,8 @@ object PaletteAction {
         // Validate input
         input.validate()
 
-        // Parse input color
-        @ColorInt val defaultColor = Color.parseColor(input.defaultColor)
-
-        // Include default in arrays?
-        val includeDefault = false
+        // // Parse default color
+        // @ColorInt val defaultColor = Color.parseColor(input.defaultColor)
 
         // Get the image path
         val imagePath = input.imagePath!!

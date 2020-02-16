@@ -54,7 +54,7 @@ class ActivityConfigRGBW : ActivityConfigTasker<RGBWInput, RGBWOutput, RGBWRunne
         colorPickerDialog.setInitialColor(Color.RED)
 
         // Subscribe to events
-        colorPickerDialog.setOnColorPickedListener { color, hexVal -> onRGBPicked(color, hexVal) }
+        colorPickerDialog.setOnColorPickedListener { color, _ -> onRGBPicked(color) }
 
         // Show the dialog
         colorPickerDialog.show()
@@ -63,9 +63,8 @@ class ActivityConfigRGBW : ActivityConfigTasker<RGBWInput, RGBWOutput, RGBWRunne
     /**
      * Called when the user picks a RGB color.
      * @param color Color picked by the user
-     * @param hexVal Color picked by the user in hexadecimal form
      */
-    open fun onRGBPicked(color: Int, hexVal: String) {
+    fun onRGBPicked(color: Int) {
 
         // Store value
         input.value.rgb = color
