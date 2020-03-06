@@ -1,10 +1,13 @@
 package com.solersoft.taskergb.devices
 
+import java.util.*
+import kotlin.collections.HashMap
+
 object DeviceManager {
 
     // region Member Variables
-    val devices = HashMap<String, DeviceInfo>()
-    val groups = HashMap<String, DeviceGroup>()
+    val devices = HashMap<UUID, DeviceInfo>()
+    val groups = HashMap<UUID, DeviceGroup>()
     // endregion
 
     // region Initialization
@@ -20,39 +23,45 @@ object DeviceManager {
         val groupName = "Main"
 
         // Create fake device for now
-        val device = DeviceInfo(name = deviceName, address = "7C:01:0A:E8:9B:D7", connectionType = ConnectionType.BLE)
-        devices[deviceName] = device
+        val device = DeviceInfo(
+                id = UUID(0, 1),
+                name = deviceName,
+                address = "7C:01:0A:E8:9B:D7",
+                connectionType = ConnectionType.BLE)
+        devices[device.id] = device
 
         // Create fake group for now
-        val group = DeviceGroup(groupName)
+        val group = DeviceGroup(
+                id = UUID(0, 1),
+                name = groupName)
         group.devices.add(device)
-        groups[groupName] = group
+        groups[group.id] = group
     }
     // endregion
 
     /**
-     * Gets the device with the specified name or throws an exception if the named device is not found.
-     * @param name The name of the device.
+     * Gets the device with the specified id or throws an exception if the device is not found.
+     * @param id The id of the device.
      */
-    fun getDevice(name: String) : DeviceInfo {
+    fun getDevice(id: UUID) : DeviceInfo {
 
         // Validate
-        require(devices.containsKey(name)) { "No device could be found with the name '$name'" }
+        require(devices.containsKey(id)) { "No device could be found with the id '$id'" }
 
         // Return device
-        return devices[name]!!
+        return devices[id]!!
     }
 
     /**
-     * Gets the group with the specified name or throws an exception if the named group is not found.
-     * @param name The name of the group.
+     * Gets the group with the specified id or throws an exception if the group is not found.
+     * @param id The id of the group.
      */
-    fun getGroup(name: String) : DeviceGroup {
+    fun getGroup(id: UUID) : DeviceGroup {
 
         // Validate
-        require(groups.containsKey(name)) { "No group could be found with the name '$name'" }
+        require(groups.containsKey(id)) { "No group could be found with the id '$id'" }
 
         // Return device
-        return groups[name]!!
+        return groups[id]!!
     }
 }

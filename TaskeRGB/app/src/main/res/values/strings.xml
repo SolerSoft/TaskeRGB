@@ -66,8 +66,8 @@
     <string name="targetLabel">Type</string>
     <string name="targetDescription">0 to update an individual device or 1 to update a group of devices.</string>
 
-    <string name="targetNameLabel">Name</string>
-    <string name="targetNameDescription">The name of the device or group to update.</string>
+    <string name="targetIDLabel">ID</string>
+    <string name="targetIDDescription">The ID of the device or group to update.</string>
 
     <string name="valueLabel">Value</string>
     <string name="valueDescription">The RGBW value that should be set.</string>

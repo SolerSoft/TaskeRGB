@@ -9,7 +9,10 @@ import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResultSucess
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.byIndex
 import com.solersoft.taskergb.devices.*
+import com.solersoft.taskergb.toUUID
 import kotlinx.coroutines.runBlocking
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 // Represents a Tasker action
@@ -62,14 +65,14 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
 
         // Parse inputs
         var targetType = TargetType::class.byIndex(input.regular.targetType)
-        var targetName = input.regular.targetName
+        var targetID = input.regular.targetID.toUUID();
         var value = input.regular.value
 
         // TODO: Remove this
-        targetName = "Test"
+        targetID = UUID(0, 1)
 
         // Validate input data
-        requireNotNull(targetName) { "${RGBWInput.VAR_TARGET_NAME} must be supplied."}
+        requireNotNull(targetID) { "${RGBWInput.VAR_TARGET_ID} must be supplied."}
         require(value.isValid().success) { "${RGBWValue.KEY} is not valid." }
 
         // Obtain list of devices
@@ -77,10 +80,10 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
         if (targetType == TargetType.Device) {
             // Single device
             devices = ArrayList<DeviceInfo>();
-            devices.add(DeviceManager.getDevice(targetName))
+            devices.add(DeviceManager.getDevice(targetID))
         } else {
             // Group of devices
-            devices = DeviceManager.getGroup(targetName).devices
+            devices = DeviceManager.getGroup(targetID).devices
         }
 
         // This would normally be a coroutine, but Tasker doesn't support that

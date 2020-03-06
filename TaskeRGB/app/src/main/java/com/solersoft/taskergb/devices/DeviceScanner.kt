@@ -12,6 +12,8 @@ import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
 import splitties.permissions.hasPermission
 import splitties.systemservices.bluetoothManager
+import java.util.*
+import kotlin.collections.ArrayList
 import android.bluetooth.le.ScanCallback as BLEScanCallback
 import android.bluetooth.le.ScanResult as BLEScanResult
 import android.bluetooth.le.ScanSettings as BLEScanSettings
@@ -64,7 +66,11 @@ object DeviceScanner {
 
         // If not, create and add it
         if (info == null) {
-            info = DeviceInfo(device.name, device.address, ConnectionType.BLE)
+            info = DeviceInfo(
+                    id = UUID.randomUUID(),
+                    name = device.name,
+                    address = device.address, 
+                    connectionType = ConnectionType.BLE)
             devices.add(info)
         }
     }

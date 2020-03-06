@@ -3,7 +3,6 @@ package com.solersoft.taskergb.tasker.rgb
 import android.graphics.Color
 import androidx.annotation.ColorInt
 import com.joaomgcd.taskerpluginlibrary.SimpleResult
-import com.joaomgcd.taskerpluginlibrary.SimpleResultSuccess
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInputField
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInputObject
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInputRoot
@@ -12,9 +11,6 @@ import com.joaomgcd.taskerpluginlibrary.output.TaskerOutputVariable
 import com.solersoft.taskergb.R
 import com.solersoft.taskergb.VAR_PREFIX
 import com.solersoft.taskergb.requireRange
-import com.solersoft.taskergb.tasker.palette.ColorTargetType
-import com.solersoft.taskergb.tasker.palette.PaletteInput
-import com.solersoft.taskergb.withPrefix
 import java.util.*
 
 /****************************************
@@ -32,13 +28,13 @@ enum class TargetType {
 @TaskerInputRoot
 class RGBWInput @JvmOverloads constructor(
         @field:TaskerInputField(VAR_TARGET_TYPE, R.string.targetLabel, R.string.targetDescription) var targetType: Int = TargetType.Device.ordinal,
-        @field:TaskerInputField(VAR_TARGET_NAME, R.string.targetNameLabel, R.string.targetNameDescription) var targetName: String? = null,
+        @field:TaskerInputField(VAR_TARGET_ID, R.string.targetIDLabel, R.string.targetIDDescription) var targetID: String? = null,
         @field:TaskerInputObject(RGBWValue.KEY, R.string.valueLabel, R.string.valueDescription) var value: RGBWValue = RGBWValue()
 ) {
 
     companion object {
         const val VAR_TARGET_TYPE = VAR_PREFIX + "targettype"
-        const val VAR_TARGET_NAME = VAR_PREFIX + "targetname"
+        const val VAR_TARGET_ID = VAR_PREFIX + "targetid"
     }
 
     /**

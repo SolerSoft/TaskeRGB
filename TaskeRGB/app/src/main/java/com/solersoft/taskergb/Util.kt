@@ -16,6 +16,8 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.setPadding
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import com.solersoft.taskergb.tasker.palette.ColorTargetResult
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.reflect.KClass
 
 
@@ -167,6 +169,17 @@ fun Activity.showHelp(@StringRes markupId : Int) {
 
 
 val RadioGroup.checkedRadioButton get() = this.findViewById<RadioButton>(checkedRadioButtonId)
+
+/**
+ * Converts a nullable string to a nullable UUID.
+ */
+fun String?.toUUID() : UUID?{
+    return if (!this.isNullOrBlank()) {
+        UUID.fromString(this);
+    } else {
+        null;
+    }
+}
 
 /**
  * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [name] is
