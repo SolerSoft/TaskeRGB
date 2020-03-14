@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.solersoft.taskergb.binding.SSViewModel
 import com.solersoft.taskergb.devices.DeviceInfo
+import com.solersoft.taskergb.devices.DeviceManager
 import com.solersoft.taskergb.devices.DeviceScanner
 
 class DevicesViewModel : SSViewModel() {
@@ -19,5 +20,6 @@ class DevicesViewModel : SSViewModel() {
     }
     val text: LiveData<String> = _text
 
-    val scannedDevices: ObservableList<DeviceInfo> = DeviceScanner.devices
+    val foundDevices: ObservableList<DeviceInfo> = DeviceScanner.devices
+    // val savedDevices: ObservableList<DeviceInfo> = DeviceManager.devices.values
 }

@@ -2,7 +2,6 @@ package com.solersoft.taskergb.binding
 
 import android.util.Log
 import androidx.annotation.StringRes
-import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import java.lang.Exception
 
@@ -16,10 +15,10 @@ open class SSViewModel : ObservableViewModel() {
 
     // region Common ViewModel Fields
     @get:Bindable
-    var erroMessage: String? by bindDelegate(null)
+    var erroMessage: String? by observableProperty(null)
 
     @get:Bindable
-    var busy: Boolean by bindDelegate(false)
+    var busy: Boolean by observableProperty(false)
     // endregion
 
 

@@ -22,7 +22,7 @@ import kotlin.reflect.jvm.isAccessible
  * </pre>
  * @see {@link https://stackoverflow.com/questions/44844933/more-fun-with-kotlin-delegates}
  */
-class KLiveData<T>(private val default: T, private val liveData : MutableLiveData<T>? = null) : ReadWriteProperty<Any?,T> {
+class LiveProperty<T>(private val default: T, private val liveData : MutableLiveData<T>? = null) : ReadWriteProperty<Any?,T> {
     val data = liveData ?: MutableLiveData<T>()
 
     override operator fun getValue(thisRef: Any?, property: KProperty<*>):T {
@@ -42,16 +42,16 @@ class KLiveData<T>(private val default: T, private val liveData : MutableLiveDat
  * Gets the {@link MutableLiveData} which backs the delegated field.
  * Example: viewModel::name.liveData
  */
-inline fun <reified R> KMutableProperty0<*>.getLiveData(): MutableLiveData<R> {
+inline fun <T> KMutableProperty0<*>.live(): MutableLiveData<T> {
     isAccessible = true
-    return (getDelegate() as KLiveData<R>).data
+    return (getDelegate() as LiveProperty<T>).data
 }
 
 /**
  * Observes the {@link MutableLiveData} which backs the delegated field.
  * Example: viewModel::name.observe(owner, observer<R>)
  */
-inline fun <reified R> KMutableProperty0<*>.observe(owner: LifecycleOwner, obs : Observer<R>) {
+inline fun <reified T> KMutableProperty0<*>.observe(owner: LifecycleOwner, obs : Observer<T>) {
     isAccessible = true
-    (getDelegate() as KLiveData<R>).data.observe(owner,obs)
+    (getDelegate() as LiveProperty<T>).data.observe(owner,obs)
 }

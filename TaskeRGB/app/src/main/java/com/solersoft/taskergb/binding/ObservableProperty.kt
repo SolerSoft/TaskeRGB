@@ -2,6 +2,7 @@ package com.solersoft.taskergb.binding
 
 import androidx.databinding.BaseObservable
 import com.solersoft.taskergb.BR
+import com.solersoft.taskergb.requireRange
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -24,21 +25,31 @@ class ObservableProperty<T>(private var value: T,
 
         val oldValue = value
         value = v
+
+        // If we don't know our binding ID yet, need to find it
         if (bindingTarget == -1) {
-            bindingTarget = BR::class.java.fields.filter {
+
+            // Get binding fields that match our field name
+            val bindFields = BR::class.java.fields.filter {
                 it.name == p.name
-            }[0].getInt(null)
+            }
+
+            // Make sure we have exactly one result
+            requireRange(bindFields.size, min = 1, max = 1) { "Could not determine binding for field '${p.name}'. Did you annotate the field with @get:Bindable?" }
+
+            // Get the binding target
+            bindingTarget = bindFields[0].getInt(null)
         }
         notifyPropertyChanged(bindingTarget)
         valueChanged?.invoke(oldValue, value)
     }
 }
 
-fun <T> BaseObservable.bindDelegate(value: T, valueChanged: ValueChangeDelegate<T>? = null):
+fun <T> BaseObservable.observableProperty(value: T, valueChanged: ValueChangeDelegate<T>? = null):
         ObservableProperty<T> =
         ObservableProperty(value = value, notifyPropertyChanged = { fieldId -> this.notifyPropertyChanged(fieldId)}, valueChanged = valueChanged)
 
-fun <T> ObservableViewModel.bindDelegate(value: T, valueChanged: ValueChangeDelegate<T>? = null):
+fun <T> ObservableViewModel.observableProperty(value: T, valueChanged: ValueChangeDelegate<T>? = null):
         ObservableProperty<T> =
         ObservableProperty(value = value, notifyPropertyChanged = { fieldId -> this.notifyPropertyChanged(fieldId)}, valueChanged = valueChanged)
 

@@ -3,9 +3,8 @@ package com.solersoft.taskergb.tasker.palette
 import android.content.Context
 import androidx.databinding.Bindable
 import com.solersoft.taskergb.R
-import com.solersoft.taskergb.binding.ObservableViewModel
 import com.solersoft.taskergb.binding.SSViewModel
-import com.solersoft.taskergb.binding.bindDelegate
+import com.solersoft.taskergb.binding.observableProperty
 import java.lang.Exception
 import kotlinx.coroutines.*
 
@@ -16,17 +15,17 @@ class PaletteViewModel() : SSViewModel() {
 
     // region Input Fields
     @get:Bindable
-    var input : PaletteInput by bindDelegate(PaletteInput())
+    var input : PaletteInput by observableProperty(PaletteInput())
     // endregion
 
     // region Output Fields
     @get:Bindable
-    var palette: PaletteEx? by bindDelegate(null)
+    var palette: PaletteEx? by observableProperty(null)
     // endregion
 
     // region State Fields
     @get:Bindable
-    var showingResults: Boolean by bindDelegate(false)
+    var showingResults: Boolean by observableProperty(false)
     // endregion
 
     // region Public Methods

@@ -44,12 +44,11 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
 
     /**
      * Creates the right runtime device for the specified {@link DeviceInfo}.
-     * @param context The context which may be used to create the device.
      * @param deviceInfo Information about the device to instantiate.
      */
-    private fun createDevice(context: Context, deviceInfo: DeviceInfo): RGBDevice {
+    private fun createDevice(deviceInfo: DeviceInfo): RGBDevice {
         return when (deviceInfo.connectionType){
-            ConnectionType.BLE -> BLEDevice(context, deviceInfo.address)
+            ConnectionType.BLE -> BLEDevice(deviceInfo.address)
             else -> throw UnsupportedOperationException("Connection type ${deviceInfo.connectionType} is not yet supported.")
         };
     }
@@ -99,7 +98,7 @@ class RGBWRunner : TaskerPluginRunnerAction<RGBWInput, RGBWOutput>() {
                 // Following may fail
                 try {
                     // Create the device
-                    device = createDevice(context, it)
+                    device = createDevice(it)
 
                     // Connect to the device
                     device.connect()

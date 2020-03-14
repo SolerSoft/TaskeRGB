@@ -77,15 +77,16 @@ open abstract class RGBDevice(
 /**
  * A RGB device that is controlled over BLE.
  */
-class BLEDevice(val context: Context, address: String) : RGBDevice(address) {
+class BLEDevice(address: String) : RGBDevice(address) {
 
     // region Constants
 
     private val TAG = this::class.simpleName
 
     companion object {
-        val RGBW_SERVICE_UUID = UUID.fromString("0000FFE5-0000-1000-8000-00805F9B34FB")
-        val RGBW_CHARACTERISTIC = UUID.fromString("0000FFE9-0000-1000-8000-00805F9B34FB")
+        val RGBW_SERVICE_UUID = UUID.fromString("0000FFE5-0000-1000-8000-00805F9B34FB")     // If it has this service, then it likely has the 2 characteristics below.
+        val RGBW_CHARACTERISTIC = UUID.fromString("0000FFE9-0000-1000-8000-00805F9B34FB")   // RGBW characteristic for above service.
+        val WHITE_CHARACTERISTIC = UUID.fromString("0000FFEA-0000-1000-8000-00805F9B34FB")  // Deducated white characteristic for above service.
     }
 
     // endregion
@@ -145,7 +146,7 @@ class BLEDevice(val context: Context, address: String) : RGBDevice(address) {
         // Any of the following may fail
         try {
             // Get the device
-            val localDevice = deviceFor(context, address)
+            val localDevice = deviceFor(address)
             device = localDevice
 
             // Create the device connection

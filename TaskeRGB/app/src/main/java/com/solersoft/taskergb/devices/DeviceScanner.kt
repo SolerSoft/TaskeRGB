@@ -2,21 +2,13 @@ package com.solersoft.taskergb.devices
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.le.ScanFilter
-import android.os.Build
-import android.os.Build.VERSION_CODES.M
-import android.os.ParcelUuid
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
 import splitties.permissions.hasPermission
-import splitties.systemservices.bluetoothManager
 import java.util.*
-import kotlin.collections.ArrayList
 import android.bluetooth.le.ScanCallback as BLEScanCallback
 import android.bluetooth.le.ScanResult as BLEScanResult
-import android.bluetooth.le.ScanSettings as BLEScanSettings
 
 /**
  * Scans for well-known devices.
@@ -25,6 +17,8 @@ object DeviceScanner {
 
     // region Internal Variables
     private val TAG = this::class.simpleName
+    private var lastOnlineUpdate: Long = 0
+
     // endregion
 
     // region Nested Types
@@ -42,12 +36,27 @@ object DeviceScanner {
         }
 
         override fun onScanResult(callbackType : Int, result : BLEScanResult) {
+            // HACK: Just handle basic result now. No filtering.
+            handleResult(result)
+
+            // Update online status?
+            val now = System.currentTimeMillis()
+            if (now - lastOnlineUpdate > 10000) {
+                lastOnlineUpdate = now
+                updateOnlineDevices()
+            }
+
+            /*
             when (callbackType) {
                 BLEScanSettings.CALLBACK_TYPE_ALL_MATCHES,
                 BLEScanSettings.CALLBACK_TYPE_FIRST_MATCH -> {
-                    handleResult(result)
+                    handleResult(result, online = true)
+                }
+                BLEScanSettings.CALLBACK_TYPE_MATCH_LOST -> {
+                    handleResult(result, online = false)
                 }
             }
+             */
         }
     }
     // endregion
@@ -57,21 +66,38 @@ object DeviceScanner {
      * Handles a new BLE scan result
      * @param result The result to handle.
      */
-    private fun handleResult(result : BLEScanResult) {
+    private fun handleResult(result: BLEScanResult) {
         // Get the device itself
         val device = result.device
+
+        // HACK: Since UUID filters don't work, we have to make sure the device name starts with 'LED' :(
+        if (device.name == null || !device.name.startsWith(prefix = "LED", ignoreCase = true)) { return }
 
         // See if we already have this device
         var info = devices.firstOrNull() { it.address == device.address }
 
-        // If not, create and add it
-        if (info == null) {
+        // Already existing?
+        if (info == null)
+        {
+            // Not existing. Create and add it.
             info = DeviceInfo(
                     id = UUID.randomUUID(),
-                    name = device.name,
-                    address = device.address, 
-                    connectionType = ConnectionType.BLE)
+                    name = device.name ?: device.address,
+                    address = device.address,
+                    connectionType = ConnectionType.BLE,
+                    lastSeen = System.currentTimeMillis())
             devices.add(info)
+        }
+        else
+        {
+            // Already existing. Just update last seen
+            info.lastSeen = System.currentTimeMillis()
+        }
+    }
+
+    private fun updateOnlineDevices() {
+        devices?.forEach() {
+            it.updateOnline()
         }
     }
     // endregion
@@ -97,10 +123,11 @@ object DeviceScanner {
         val scanner = adapter.bluetoothLeScanner ?: throw UnsupportedOperationException("BLE scanner not found")
 
         // Create scan settings
+        /*
         val scanSettings = BLEScanSettings.Builder().apply {
 
-            // Only notify us once per device found
-            setCallbackType(BLEScanSettings.CALLBACK_TYPE_FIRST_MATCH)
+            // Only notify us once per device found; also notify if device lost
+            setCallbackType(BLEScanSettings.CALLBACK_TYPE_FIRST_MATCH or BLEScanSettings.CALLBACK_TYPE_MATCH_LOST)
 
             // Causes results to be batched
             // setReportDelay(4000) // Causes results to be batched
@@ -112,17 +139,21 @@ object DeviceScanner {
             // Match all devices, even with low signal strength
             setMatchMode(BLEScanSettings.MATCH_MODE_AGGRESSIVE)
 
-            // Make sure the device advertises a couple of times
-            setNumOfMatches(BLEScanSettings.MATCH_NUM_FEW_ADVERTISEMENT)
+            // Take any matching device, even if it only advertises once
+            setNumOfMatches(BLEScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
 
         }.build();
+         */
 
         // Create filters for our known device types
-        val filters = ArrayList<ScanFilter>();
-        filters.add(ScanFilter.Builder().setServiceUuid(ParcelUuid(BLEDevice.RGBW_SERVICE_UUID)).build());
+        // HACK: Android does NOT allow filter by partial name, and some LED devices do not
+        // include their service UUIDs in their advertising packet.
+        // val filters = ArrayList<ScanFilter>();
+        // filters.add(ScanFilter.Builder().setServiceUuid(ParcelUuid(BLEDevice.RGBW_SERVICE_UUID)).build());
 
         // Start scanning
-        scanner.startScan(filters, scanSettings, bleScanCallback)
+        // scanner.startScan(filters, scanSettings, bleScanCallback)
+        scanner.startScan(bleScanCallback)
     }
 
     /**

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 /**
  * A ViewModel that is also an Observable,
  * to be used with the Data Binding Library.
+ * @see {@Link https://developer.android.com/topic/libraries/data-binding/architecture}
  */
 open class ObservableViewModel : ViewModel(), Observable {
     private val callbacks: PropertyChangeRegistry = PropertyChangeRegistry()

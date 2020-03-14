@@ -27,7 +27,7 @@ class DevicesFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_devices, container, false)
 
         // Set lifecycle owner for LiveData bindings
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this.viewLifecycleOwner
 
         // Get the ViewModel
         vm = ViewModelProviders.of(this).get(DevicesViewModel::class.java)

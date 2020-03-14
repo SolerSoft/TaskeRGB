@@ -1,5 +1,6 @@
 package com.solersoft.taskergb.ble
 
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGattService
 import android.bluetooth.BluetoothManager
@@ -13,9 +14,8 @@ import kotlinx.coroutines.channels.consumeEach
 const val GATT_HELPERS_TAG = "GattHelpers"
 
 @RequiresApi(18)
-fun deviceFor(context: Context, macAddress: String): BluetoothDevice {
-    val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-    return manager.adapter.getRemoteDevice(macAddress)
+fun deviceFor(macAddress: String): BluetoothDevice {
+    return BluetoothAdapter.getDefaultAdapter().getRemoteDevice(macAddress)
 }
 
 @ObsoleteCoroutinesApi

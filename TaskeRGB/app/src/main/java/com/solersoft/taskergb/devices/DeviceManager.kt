@@ -1,12 +1,13 @@
 package com.solersoft.taskergb.devices
 
+import androidx.databinding.ObservableArrayMap
 import java.util.*
 import kotlin.collections.HashMap
 
 object DeviceManager {
 
     // region Member Variables
-    val devices = HashMap<UUID, DeviceInfo>()
+    val devices = ObservableArrayMap<UUID, DeviceInfo>()
     val groups = HashMap<UUID, DeviceGroup>()
     // endregion
 

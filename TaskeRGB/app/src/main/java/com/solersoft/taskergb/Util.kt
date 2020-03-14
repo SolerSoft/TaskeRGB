@@ -182,6 +182,22 @@ fun String?.toUUID() : UUID?{
 }
 
 /**
+ * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] isn't
+ * at least the minimum value.
+ */
+inline fun requireMin(value: Double, min: Double, lazyMessage: () -> Any): Unit {
+    require((value < min), lazyMessage)
+}
+
+/**
+ * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [value] isn't
+ * at least the minimum value.
+ */
+inline fun requireMin(value: Int, min: Int, lazyMessage: () -> Any): Unit {
+    require((value < min), lazyMessage)
+}
+
+/**
  * Throws an [IllegalArgumentException] with the result of calling [lazyMessage] if [name] is
  * not a valid member of the enum.
  */
